@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm
-from .models import db, User, Customer
+from .models import db, Manager, Customer
 import requests
 import json
 import os
@@ -12,24 +12,20 @@ import os
 def home():
     return render_template('home.html'), 200
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        user = User(
-            name = form.data['name'],
-            email = form.data['email'],
-            role = 'customer'
-        )
         customer = Customer(
-            phone = form.data['phone'],
-            user = user
+            name=form.data['name'],
+            email=form.data['email'],
+            phone=form.data['phone']
         )
         db.session.add(customer)
         db.session.commit()
         return redirect(url_for('/'))
     return render_template('auth/register.html', form=form)
-
 
 
 @app.route('/customer')
