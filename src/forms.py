@@ -15,3 +15,7 @@ class AddItemsForm(FlaskForm):
     price = StringField('price',validators=[DataRequired()])
     cost =  StringField('cost',validators=[DataRequired()])
     count =  StringField('count',validators=[DataRequired()])
+
+class OrderForm(FlaskForm):
+    item_ordered = StringField('item_ordered', validators=[DataRequired()])
+    number_ordered = StringField('number_ordered', validators=[DataRequired()])
