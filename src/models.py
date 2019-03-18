@@ -38,7 +38,7 @@ class Employee(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256))
-    pay_rate = db.Column(db.Float(5, 2))
+    pay_rate = db.Column(db.Numeric(5, 2))
 
     orders = db.relationship(
         'Order',
@@ -91,8 +91,8 @@ class Item(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=False)
-    price = db.Column(db.Float(10, 2))
-    cog = db.Column(db.Float(10, 2))
+    price = db.Column(db.Numeric(10, 2))
+    cog = db.Column(db.Numeric(10, 2))
     inventory_count = db.Column(db.Integer, default=0)
 
     orders = db.relationship(
