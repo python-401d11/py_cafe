@@ -12,3 +12,8 @@ More to come
 
 ## Getting Started
 We will let you know
+
+
+## 
+ CSS Skeleton V2.04  was used  Copyright 2014, Dave Gamache, Free to use under MIT license.
+ 
