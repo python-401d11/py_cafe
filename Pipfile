@@ -19,7 +19,7 @@ flask-migrate = "*"
 python-dotenv = "*"
 flask-wtf = "*"
 passlib = "*"
-dev = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"

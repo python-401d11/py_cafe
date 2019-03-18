@@ -14,6 +14,12 @@ def home():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
+    if form.validate_on_submit():
+        name = form.data['name']
+        phone = form.data['phone']
+        email = form.data['email']
+        role = 'customer'
+        return redirect(url_for('/'))
     return render_template('auth/register.html', form=form)
 
 
