@@ -14,8 +14,9 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256))
-    email = db.Column(db.String(256), unique=True)
-    password = db.Column(db.String(256), nullable=False)
+    email = db.Column(db.String(256))
+    customer = db.relationship('Customer', backref='user', lazy=True)
+    password = db.Column(db.String(256))
     role = db.Column(db.String(16))
 
 
@@ -71,11 +72,11 @@ class OrdersContain(db.Model):
 
     order = db.relationship(
         'Order',
-        backref=db.backref('orders', cascade='all')
+        backref=db.backref('orders_contain', cascade='all')
     )
     item = db.relationship(
         'Order',
-        backref=db.backref('items')
+        backref=db.backref('item')
     )
 
 
