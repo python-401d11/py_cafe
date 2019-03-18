@@ -38,19 +38,30 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cust_id = db.Column(db.ForeignKey('customers.id'), nullable=False)
     empl_id = db.Column(db.ForeignKey('employee.id'), nullable=False)
+    date_created = db.Column(db.DateTime, default=dt.now())
 
-    items = relationship(
+    items = db.relationship(
         'Item',
-        secondary=orders_contain,
+        secondary='orders_contain',
         back_populates='orders'
     )
 
 
-orders_contain = Table(
-    'orders_contain',
-    Column('order_id', Integer, ForeignKey('orders.id')),
-    Column('item_id', Integer, ForeignKey('items.id'))
-)
+class OrdersContain(db.Model):
+    __tablename__ = 'orders_contain'
+
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.ForeignKey('orders.id'), nullable=False)
+    item_id = db.Column(db.ForeignKey('items.id'), nullable=False)
+
+    order = db.relationship(
+        'Order',
+        backref=db.backref('orders', cascade='all')
+    )
+    item = db.relationship(
+        'Order',
+        backref=db.backref('items')
+    )
 
 
 class Item(db.Model):
@@ -58,12 +69,12 @@ class Item(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=False)
-    price = db.Column(db.Decimal(10, 2))
-    cog = db.Column(db.Decimal(10, 2))
+    price = db.Column(db.Float(10, 2))
+    cog = db.Column(db.Float(10, 2))
     inventory_count = db.Column(db.Integer, default=0)
 
-    orders = relationship(
+    orders = db.relationship(
         'Order',
-        secondary=orders_contain,
+        secondary='orders_contain',
         back_populates='items'
     )
