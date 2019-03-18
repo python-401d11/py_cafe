@@ -1,5 +1,5 @@
 from src.models import db as _db
-from src.models import Manager, Customer, Employee, Order, OrdersContain, Item
+from src.models import Manager, Customer, Employee, Order, OrderItems, Item
 from src import app as _app
 import pytest
 import os
