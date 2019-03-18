@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, PasswordField
 from wtforms.validators import DataRequired
-from .models import User, Customer, Employee, Order, OrdersContain, Item
+from .models import Manager, Customer, Employee, Order, OrdersContain, Item
 from flask import g
 
 class RegisterForm(FlaskForm):

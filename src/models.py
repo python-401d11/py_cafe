@@ -9,27 +9,23 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-class User(db.Model):
-    __tablename__ = 'users'
+class Manager(db.Model):
+    __tablename__ = 'managers'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256))
     email = db.Column(db.String(256))
-    customer = db.relationship('Customer', backref='user', lazy=True)
     password = db.Column(db.String(256))
-    role = db.Column(db.String(16))
 
 
-class Customer(User):
+class Customer(db.Model):
     __tablename__ = 'customers'
 
-    user_id = db.Column(db.ForeignKey('users.id'), primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256))
+    email = db.Column(db.String(256))
+    password = db.Column(db.String(256))
     phone = db.Column(db.String(32))
-
-    user = db.relationship(
-        'User',
-        back_populates='customer'
-    )
 
 
 class Employee(db.Model):
@@ -44,23 +40,23 @@ class Order(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
-    cust_id = db.Column(db.ForeignKey('customers.user_id'), nullable=False)
-    empl_id = db.Column(db.ForeignKey('employee.id'), nullable=False)
     date_created = db.Column(db.DateTime, default=dt.now())
+    cust_id = db.Column(db.ForeignKey('customers.id'), nullable=False)
+    empl_id = db.Column(db.ForeignKey('employee.id'), nullable=False)
 
-    customer = db.relationship(
-        'Customer',
-        back_populates='customers'
-    )
-    employee = db.relationship(
-        'Employee',
-        back_populates='employees'
-    )
-    items = db.relationship(
-        'Item',
-        secondary='orders_contain',
-        back_populates='orders'
-    )
+    # customer = db.relationship(
+    #     'Customer',
+    #     back_populates='customer'
+    # )
+    # employee = db.relationship(
+    #     'Employee',
+    #     back_populates='employee'
+    # )
+    # items = db.relationship(
+    #     'Item',
+    #     secondary='orders_contain',
+    #     back_populates='orders'
+    # )
 
 
 class OrdersContain(db.Model):
@@ -70,14 +66,14 @@ class OrdersContain(db.Model):
     order_id = db.Column(db.ForeignKey('orders.id'), nullable=False)
     item_id = db.Column(db.ForeignKey('items.id'), nullable=False)
 
-    order = db.relationship(
-        'Order',
-        backref=db.backref('orders_contain', cascade='all')
-    )
-    item = db.relationship(
-        'Order',
-        backref=db.backref('item')
-    )
+    # order = db.relationship(
+    #     'Order',
+    #     backref=db.backref('orders_contain', cascade='all')
+    # )
+    # item = db.relationship(
+    #     'Order',
+    #     backref=db.backref('item')
+    # )
 
 
 class Item(db.Model):
@@ -89,8 +85,8 @@ class Item(db.Model):
     cog = db.Column(db.Float(10, 2))
     inventory_count = db.Column(db.Integer, default=0)
 
-    orders = db.relationship(
-        'Order',
-        secondary='orders_contain',
-        back_populates='items'
-    )
+    # orders = db.relationship(
+    #     'Order',
+    #     secondary='orders_contain',
+    #     back_populates='items'
+    # )

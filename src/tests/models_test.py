@@ -1,4 +1,4 @@
-from src.models import User, Customer, Employee, Order, OrdersContain, Item
+from src.models import Manager, Customer, Employee, Order, OrdersContain, Item
 
 
 class TestUserModel():
