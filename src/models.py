@@ -100,3 +100,6 @@ class Item(db.Model):
         secondary='order_items',
         back_populates='items'
     )
+
+    def __repr__(self):
+        return '<Item {}>'.format(self.name)

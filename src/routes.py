@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm, OrderForm
-from .models import db, Manager, Customer, Item
+from .models import db, Manager, Customer, Item, Order
 import requests
 import json
 import os
@@ -39,9 +39,18 @@ def customer():
 @app.route('/order', methods = ['GET', 'POST'])
 def order():
     form = OrderForm()
+    if form.validate_on_submit():
+        items_list = [form.data['items']]
+        order =  Order(
+            items = items_list
+        )
+        db.session.add(order)
+        dp.session.commit()
 
     items=Item.query.all()
+    
     return render_template('order.html', items=items, form=form)
+
     
 
 

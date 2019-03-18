@@ -17,5 +17,9 @@ class AddItemsForm(FlaskForm):
     count =  StringField('count',validators=[DataRequired()])
 
 class OrderForm(FlaskForm):
-    item_ordered = StringField('item_ordered', validators=[DataRequired()])
+    items = SelectField('items')
     number_ordered = StringField('number_ordered', validators=[DataRequired()])
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.items.choices = [(item.id,item.name)for item in Item.query.all()]
+    
