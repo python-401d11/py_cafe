@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Add Items</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <h2>Add Item:</h2>
+    <form action="{{ url_for(".add_items") }} method = "POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label }}{{ form.name(size = 32)}}
+        {{ form.cost.label }}{{ form.cost (size = 32)}}
+        {{ form.price.label }}{{ form.price (size = 32)}}
+        {{ form.count.label }}{{ form.count (size = 32)}}
+        <input type="submit" name="add_item" id="add_item" value = "Go">
+    </form>
+</div>
+{% endblock content %}
