@@ -1,8 +1,9 @@
 {% extends "base.html" %}
-{% block title}
+{% block title %}
 <title>Order Page</title>
 
-{% endblock title}
+{% endblock title %}
+{% block content %}
 <div class = "container">
     <h2> Py Cafe Menu</h2>
     <table class="u-full-width">
@@ -15,8 +16,8 @@
     <tbody>
         {% for item in  items %}
         <tr>
-            <td>{{}}</td>   <!-- Item Name from table-->
-            <td>{{}}</td>   <!-- Item price from table-->
+            <td>{{ item.name }}</td>   <!-- Item Name from table-->
+            <td>{{ item.price }}</td>   <!-- Item price from table-->
         </tr>
         {% endfor %}
     </tbody>
@@ -25,5 +26,8 @@
         {{ form.hidden_tag()}}
         {{ form.item_ordered.label }}{{ form.item_ordered}}
         {{ form.number_ordered.label }}{{ form.number_ordered}}
+        <input type="submit" name="login_form" id="login_form" value = "Go">
+
     </form>
 </div>
+{% endblock content %}
