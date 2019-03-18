@@ -123,4 +123,11 @@ def item(session):
 @pytest.fixture()
 def order(session, customer, employee, item):
     """ Create test order """
-    pass
+    order = Order(
+        customer=customer,
+        employee=employee,
+        item=item
+    )
+    session.add(order)
+    session.commit()
+    return order

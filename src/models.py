@@ -48,6 +48,14 @@ class Order(db.Model):
     empl_id = db.Column(db.ForeignKey('employee.id'), nullable=False)
     date_created = db.Column(db.DateTime, default=dt.now())
 
+    customer = db.relationship(
+        'Customer',
+        back_populates='customers'
+    )
+    employee = db.relationship(
+        'Employee',
+        back_populates='employees'
+    )
     items = db.relationship(
         'Item',
         secondary='orders_contain',
