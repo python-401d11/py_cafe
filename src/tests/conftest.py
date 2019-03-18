@@ -68,15 +68,11 @@ def client(app, db, session):
 @pytest.fixture()
 def customer(session):
     """ Create test user with customer role """
-    user = User(
+    customer = Customer(
         name='Milo',
         email='milo@test.com',
         password='12345',
-        role='customer'
-    )
-    customer = Customer(
-        phone='123-456-7890',
-        user=user
+        phone='123-456-7890'
     )
     session.add(customer)
     session.commit()
@@ -86,15 +82,14 @@ def customer(session):
 @pytest.fixture()
 def manager(session):
     """ Create test user with manager role """
-    user = User(
+    manager = Manager(
         name='Tim',
         email='tim@test.com',
-        password='12345',
-        role='manager'
+        password='12345'
     )
-    session.add(user)
+    session.add(manager)
     session.commit()
-    return user
+    return manager
 
 
 @pytest.fixture()
@@ -104,9 +99,12 @@ def employee(session):
         name='Dan',
         pay_rate=10.50
     )
+    session.add(employee)
+    session.commit()
+    return employee
 
 
-@pytest.fixure()
+@pytest.fixture()
 def item(session):
     """ Create test item """
     item = Item(
@@ -126,7 +124,7 @@ def order(session, customer, employee, item):
     order = Order(
         customer=customer,
         employee=employee,
-        item=item
+        items=[item]
     )
     session.add(order)
     session.commit()
