@@ -14,8 +14,8 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256))
-    email = db.Column(db.String(256))
-    password = db.Column(db.String(256))
+    email = db.Column(db.String(256), unique=True)
+    password = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(16))
 
 
@@ -47,6 +47,14 @@ class Order(db.Model):
     empl_id = db.Column(db.ForeignKey('employee.id'), nullable=False)
     date_created = db.Column(db.DateTime, default=dt.now())
 
+    customer = db.relationship(
+        'Customer',
+        back_populates='customers'
+    )
+    employee = db.relationship(
+        'Employee',
+        back_populates='employees'
+    )
     items = db.relationship(
         'Item',
         secondary='orders_contain',
