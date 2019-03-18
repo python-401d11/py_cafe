@@ -105,26 +105,33 @@ def employee(session):
 
 
 @pytest.fixture()
-def item(session):
-    """ Create test item """
-    item = Item(
+def items(session):
+    """ Create test items """
+    item1 = Item(
         name='Biscuits and Gravy',
         price=9.50,
         cog=6.54,
         inventory_count=12
     )
-    session.add(item)
+    session.add(item1)
+    item2 = Item(
+        name='Cheeseburger',
+        price=8.50,
+        cog=5.00,
+        inventory_count=22
+    )
+    session.add(item2)
     session.commit()
-    return item
+    return [item1, item2]
 
 
 @pytest.fixture()
-def order(session, customer, employee, item):
+def order(session, customer, employee, items):
     """ Create test order """
     order = Order(
         customer=customer,
         employee=employee,
-        items=[item]
+        items=items
     )
     session.add(order)
     session.commit()
