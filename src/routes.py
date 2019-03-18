@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
+from .forms import RegisterForm, AddItemsForm
 import requests
 import json
 import os
@@ -8,7 +9,13 @@ import os
 
 @app.route('/')
 def home():
-    pass
+    return render_template('home.html'), 200
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    return render_template('auth/register.html', form=form)
+
 
 
 @app.route('/customer')
@@ -21,9 +28,10 @@ def order():
     pass
 
 
-@app.route('/item')
-def item():
-    pass
+@app.route('/add_items', methods=['GET', 'POST'])
+def add_items():
+    form = AddItemsForm()
+    return render_template('auth/add_items.html', form=form)
 
 
 @app.route('/reservation')

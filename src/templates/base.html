@@ -12,17 +12,18 @@
             <header>
                 <nav class="main_nav"
                 <ul>
-                    <li><a href="url_for(".home") }}>Home</a></li>
-                    <li><a href="url_for(".customer")}}>Registar</a></li>
-                    <li><a href="url_for(".order") }}>Order</a></li>
-                    <li><a href="url_for(".item") }}>Add Item</a></li>
+                    <li><a href="{{url_for(".home") }}">Home</a></li>
+                    <li><a href="{{url_for(".register")}}">Register</a></li>
+                    <li><a href="{{url_for(".order") }}">Order</a></li>
+                    <li><a href="{{url_for(".add_items") }}">Add Item</a></li>
                 </nav>
             </header>
             <main>
                 {% for message in get_flashed_messages() %}
                 <div class = "flashed-container"> {{message}}</div>
                 {% endfor %}
-
+                {% block content %}
+                {% endblock content %}
             </main>
         </body>
     </html>
