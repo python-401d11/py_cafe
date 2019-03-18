@@ -37,7 +37,7 @@ class Order(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
-    cust_id = db.Column(db.ForeignKey('customers.id'), nullable=False)
+    cust_id = db.Column(db.ForeignKey('customers.user_id'), nullable=False)
     empl_id = db.Column(db.ForeignKey('employee.id'), nullable=False)
     date_created = db.Column(db.DateTime, default=dt.now())
 
