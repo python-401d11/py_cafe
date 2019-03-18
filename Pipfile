@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+pytest-watch = "*"
+pytest-cov = "*"
+pep8 = "*"
+
+[packages]
+requests = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+psycopg2-binary = "*"
+flask-migrate = "*"
+python-dotenv = "*"
+flask-wtf = "*"
+passlib = "*"
+
+[requires]
+python_version = "3.7"
