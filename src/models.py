@@ -24,12 +24,18 @@ class Customer(User):
     user_id = db.Column(db.ForeignKey('users.id'), primary_key=True)
     phone = db.Column(db.String(32))
 
+    user = db.relationship(
+        'User',
+        back_populates='customer'
+    )
+
 
 class Employee(db.Model):
     __tablename__ = 'employee'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256))
+    pay_rate = db.Column(db.Float(5, 2))
 
 
 class Order(db.Model):
