@@ -1,8 +1,8 @@
 from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
-from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, DeleteForm
-from .models import db, Manager, Customer, Item, Order
+from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, DeleteForm, DeleteUserForm
+from .models import db, Manager, Customer, Item, Order, User
 from .auth import login_required, authorization_required
 import requests
 import json
@@ -12,6 +12,10 @@ import os
 @app.route('/')
 def home():
     return render_template('home.html'), 200
+
+@app.route('/about')
+def about():
+    return render_template('about_us.html'), 200
 
 
 @app.add_template_global
@@ -88,6 +92,17 @@ def update_items():
     items= Item.query.all()
     return render_template('auth/update_items.html', form=form, items=items) 
 
+@app.route('/auth/manager/all_users', methods=['GET','POST'])
+def all_users():
+    form = DeleteUserForm()
+    if form.validate_on_submit():
+        id = form.data['users']
+        user = User.query.filter_by(id=id).first()
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('.all_users'))
+    users = User.query.all()
+    return render_template('/auth/manager/all_users.html', users=users, form=form)
 
 @app.route('/reservation')
 def reservation():
