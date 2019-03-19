@@ -14,6 +14,17 @@ def login_required(view):
     return wrapped_view
 
 
+def authorization_required(view, roles=[]):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('.login'))
+        if g.user.type not in roles:
+            abort(401)
+        return view(**kwargs)
+    return wrapped_view
+
+
 @app.before_request
 def load_logged_in_user():
     user_id = session.get('user_id')
@@ -59,3 +70,11 @@ def login():
         flash(error)
 
     return render_template('auth/login.html', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    flash('Thank you, bye for now')
+    return redirect(url_for('.login'))

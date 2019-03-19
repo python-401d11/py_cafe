@@ -28,7 +28,9 @@ def order():
     form = OrderForm()
     if form.validate_on_submit():
         items_list = [form.data['items']]
+        customer = Customer.query.filter_by(id=g.user.id).first()
         order = Order(
+            customer=customer,
             items=items_list
         )
         db.session.add(order)
