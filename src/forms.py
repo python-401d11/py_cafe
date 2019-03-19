@@ -29,7 +29,7 @@ class OrderForm(FlaskForm):
     number_ordered = StringField('number_ordered', validators=[DataRequired()])
     def __init__(self,*args, **kwargs):
         super().__init__(*args,**kwargs)
-        self.items.choices = [str(item.id,item.name)for item in Item.query.all()]
+        self.items.choices = [(str(item.id),item.name)for item in Item.query.all()]
 
 class UpdateItemsForm(FlaskForm):
     name =SelectField('name')

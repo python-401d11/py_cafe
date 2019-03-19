@@ -58,13 +58,14 @@ def delete_items():
     form = DeleteForm()
     if form.validate_on_submit():
         name = form.data['items']
-        item = Item.query.filter_by(name='name').first()
+        item = Item.query.filter_by(id=name).first()
         db.session.delete(item)
         db.session.commit()
+        return redirect(url_for('/'))
     items= Item.query.all()
     return render_template('auth/delete_items.html', form=form, items=items)
 
-@app.route('/item/update', methods=['POST']) # this is a PUT
+@app.route('/item/update', methods=['GET','POST']) # this is a PUT
 def update_items():
     form = UpdateItemsForm()
     if form.validate_on_submit():
@@ -76,7 +77,7 @@ def update_items():
         )
         db.session.add(item)
         db.session.commit()
-        return redirect(url_for('/')) 
+        return redirect(url_for('auth/update_items.html')) 
 
 
 @app.route('/reservation')
