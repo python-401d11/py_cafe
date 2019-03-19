@@ -35,7 +35,7 @@ class OrderForm(FlaskForm):
 
 
 class UpdateItemsForm(FlaskForm):
-    name = SelectField('name')
+    items = SelectField('items')
     price = StringField('price', validators=[DataRequired()])
     cost = StringField('cost', validators=[DataRequired()])
     count = StringField('count', validators=[DataRequired()])

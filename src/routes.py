@@ -57,9 +57,9 @@ def add_items():
         )
         db.session.add(item)
         db.session.commit()
-        return redirect(url_for('/'))
-
-    return render_template('auth/add_items.html', form=form)
+        return redirect(url_for('.add_items'))
+    items= Item.query.all()
+    return render_template('auth/add_items.html', form=form, items= items)
 
 
 @app.route('/item/delete', methods=['GET', 'POST'])  # this is a DELETE
@@ -70,7 +70,7 @@ def delete_items():
         item = Item.query.filter_by(id=name).first()
         db.session.delete(item)
         db.session.commit()
-        return redirect(url_for('/'))
+        return redirect(url_for('.delete_items'))
     items= Item.query.all()
     return render_template('auth/delete_items.html', form=form, items=items)
 
@@ -78,15 +78,15 @@ def delete_items():
 def update_items():
     form = UpdateItemsForm()
     if form.validate_on_submit():
-        item = Item(
-            name=form.data['name'],
-            cog=form.data['cost'],
-            price=form.data['price'],
-            inventory_count=form.data['count']
-        )
-        db.session.add(item)
+        item = Item.query.get(form.data['items'])
+        item.cog=form.data['cost'],
+        item.price=form.data['price'],
+        item.inventory_count=form.data['count']
+        # db.session.add(item)
         db.session.commit()
-        return redirect(url_for('auth/update_items.html')) 
+        return redirect(url_for('.update_items'))
+    items= Item.query.all()
+    return render_template('auth/update_items.html', form=form, items=items) 
 
 
 @app.route('/reservation')
