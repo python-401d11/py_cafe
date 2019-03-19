@@ -103,6 +103,13 @@ class Order(db.Model):
         back_populates='orders'
     )
 
+    def __init__(self, items, customer):
+        for item in items:
+            item.inventory_count -= 1
+            db.session.commit()
+        self.items = items
+        self.customer = customer
+
 
 class OrderItems(db.Model):
     __tablename__ = 'order_items'

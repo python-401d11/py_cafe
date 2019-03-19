@@ -1,5 +1,3 @@
-
-
 const vm = new Vue({
     el: '#orders',
     data: {
