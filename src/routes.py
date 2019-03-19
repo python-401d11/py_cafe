@@ -53,10 +53,16 @@ def add_items():
 
     return render_template('auth/add_items.html', form=form)
 
-@app.route('/item/delete', methods=['POST']) # this is a DELETE
+@app.route('/item/delete', methods=['GET','POST']) # this is a DELETE
 def delete_items():
     form = DeleteForm()
-    pass
+    if form.validate_on_submit():
+        name = form.data['items']
+        item = Item.query.filter_by(name='name').first()
+        db.session.delete(item)
+        db.session.commit()
+    items= Item.query.all()
+    return render_template('auth/delete_items.html', form=form, items=items)
 
 @app.route('/item/update', methods=['POST']) # this is a PUT
 def update_items():

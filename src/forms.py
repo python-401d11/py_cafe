@@ -38,9 +38,10 @@ class UpdateItemsForm(FlaskForm):
     count =  StringField('count',validators=[DataRequired()])
     def __init__(self,*args, **kwargs):
         super().__init__(*args,**kwargs)
-        self.items.choices = [str(item.id,item.name)for item in Item.query.all()] 
+        self.items.choices = [(str(item.id),item.name)for item in Item.query.all()] 
+
 class DeleteForm(FlaskForm):
-    name =SelectField('name')
+    items =SelectField('items')
     def __init__(self,*args, **kwargs):
         super().__init__(*args,**kwargs)
-        self.items.choices = [str(item.id,item.name)for item in Item.query.all()] 
+        self.items.choices = [(str(item.id),item.name)for item in Item.query.all()] 
