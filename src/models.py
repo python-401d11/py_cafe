@@ -9,32 +9,48 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-class Manager(db.Model):
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256))
+    email = db.Column(db.String(256))
+    password = db.Column(db.String(256))
+    type = db.Column(db.String(64))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'user',
+        'polymorphic_on': type
+    }
+
+
+class Manager(User):
     __tablename__ = 'managers'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256))
-    email = db.Column(db.String(256))
-    password = db.Column(db.String(256))
+    id = db.Column(db.ForeignKey('users.id'), primary_key=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'manager'
+    }
 
 
-class Customer(db.Model):
+class Customer(User):
     __tablename__ = 'customers'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256))
-    email = db.Column(db.String(256))
-    password = db.Column(db.String(256))
+    id = db.Column(db.ForeignKey('users.id'), primary_key=True)
     phone = db.Column(db.String(32))
 
     orders = db.relationship(
         'Order',
         back_populates='customer'
     )
+    __mapper_args__ = {
+        'polymorphic_identity': 'customer'
+    }
 
 
 class Employee(db.Model):
-    __tablename__ = 'employee'
+    __tablename__ = 'employees'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256))
@@ -52,7 +68,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_created = db.Column(db.DateTime, default=dt.now())
     cust_id = db.Column(db.ForeignKey('customers.id'), nullable=False)
-    empl_id = db.Column(db.ForeignKey('employee.id'), nullable=False)
+    empl_id = db.Column(db.ForeignKey('employees.id'), nullable=False)
 
     customer = db.relationship(
         'Customer',
