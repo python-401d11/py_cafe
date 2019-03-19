@@ -14,7 +14,10 @@ def login_required(view):
     return wrapped_view
 
 
-def authorization_required(view, roles=[]):
+def authorization_required(view=None, roles=[]):
+    if not view:
+        return functools.partial(authorization_required, roles=roles)
+
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
