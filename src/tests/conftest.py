@@ -97,6 +97,8 @@ def employee(session):
     """ Create test employee """
     employee = Employee(
         name='Dan',
+        email='dan@test.com',
+        password='54321',
         pay_rate=10.50
     )
     session.add(employee)
