@@ -1,3 +1,16 @@
+.order-select {
+    cursor: pointer;
+}
+
+#orders {
+    display: grid;
+    grid-template-columns: fr fr;
+}
+
+#items-table {
+    grid-column-start: 0;
+}
+
 li {
     text-decoration: none;
     display: inline-block;

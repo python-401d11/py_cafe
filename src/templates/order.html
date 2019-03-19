@@ -4,9 +4,9 @@
 
 {% endblock title %}
 {% block content %}
-<div class="container">
+<div class="container" id="orders">
     <h2> Py Cafe Menu</h2>
-    <table class="u-full-width">
+    <table id="items-table">
         <thead>
             <tr>
                 <th>Item</th>
@@ -18,16 +18,40 @@
             <tr>
                 <td>{{ item.name }}</td> <!-- Item Name from table-->
                 <td>{{ item.price }}</td> <!-- Item price from table-->
+                <td v-on:click="updateOrder($event)"
+                    class="order-select"
+                    data-id="{{ item.id }}" 
+                    data-name="{{ item.name }}" 
+                    data-price="{{ item.price }}" 
+                    >Add to Order</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <form action="{{ url_for(".order") }}" method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.number_ordered.label }}{{ form.number_ordered}}
-        <input type="submit" name="OrderForm" id="OrderForm" value="Go">
-        
-        {{ form.items.label }} {{ form.items() }}
-    </form>
+    <table id="order-items-table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in orderItems">
+                <td>[[ item.name ]]</td>
+                <td>[[ item.price ]]</td>
+            </tr>
+            <tr>
+                <td>Total Price:</td>
+                <td v-model="totalPrice">[[ totalPrice ]]</td>
+            </tr>
+        </tbody>
+    </table>
+                <form action="{{ url_for(".order") }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    {{ form.item_ids.label }} {{ form.item_ids }}
+                    <input type="submit" value="Go">
+                </form>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="{{ url_for("static", filename="js/app.js") }}"></script>
 {% endblock content %}
