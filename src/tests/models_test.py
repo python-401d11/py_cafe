@@ -10,7 +10,8 @@ class TestUserModels():
     def test_customer_data(self, customer):
         assert customer.name == 'Milo'
         assert customer.email == 'milo@test.com'
-        assert customer.password == '12345'
+        assert customer.password
+        assert customer.password != '12345'
         assert customer.phone == '123-456-7890'
 
     def test_create_manager(self, manager):
@@ -19,13 +20,25 @@ class TestUserModels():
     def test_manager_data(self, manager):
         assert manager.name == 'Tim'
         assert manager.email == 'tim@test.com'
-        assert manager.password == '12345'
+        assert manager.password
+        assert manager.password != '12345'
 
-    def test_user_query(self, customer, manager):
+    def test_create_employee(self, employee):
+        assert employee
+
+    def test_employee_data(self, employee):
+        assert employee.name == 'Dan'
+        assert employee.email == 'dan@test.com'
+        assert employee.password
+        assert employee.password != '54321'
+
+    def test_user_query(self, customer, manager, employee):
         c = Customer.query.all()
         m = Manager.query.all()
+        e = Employee.query.all()
         assert c[0].name == 'Milo'
         assert m[0].name == 'Tim'
+        assert e[0].name == 'Dan'
 
 
 class TestItems():

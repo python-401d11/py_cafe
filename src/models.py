@@ -23,6 +23,18 @@ class User(db.Model):
         'polymorphic_on': type
     }
 
+    def __init__(self, name, email, password):
+        self.name = name
+        self.email = email
+        self.password = sha256_crypt.hash(password)
+
+    @classmethod
+    def check_pass_hash(cls, user, password):
+        if user is not None:
+            if sha256_crypt.verify(password, user.password):
+                return True
+        return False
+
 
 class Manager(User):
     __tablename__ = 'managers'
@@ -32,6 +44,9 @@ class Manager(User):
         primary_key=True
     )
     __mapper_args__ = {'polymorphic_identity': 'manager'}
+
+    def __init__(self, name, email, password):
+        User.__init__(self, name, email, password)
 
 
 class Customer(User):
@@ -45,6 +60,10 @@ class Customer(User):
     orders = db.relationship('Order', back_populates='customer')
     __mapper_args__ = {'polymorphic_identity': 'customer'}
 
+    def __init__(self, name, email, password, phone):
+        User.__init__(self, name, email, password)
+        self.phone = phone
+
 
 class Employee(User):
     __tablename__ = 'employees'
@@ -54,9 +73,12 @@ class Employee(User):
         db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
         primary_key=True
     )
-
     orders = db.relationship('Order', back_populates='employee')
     __mapper_args__ = {'polymorphic_identity': 'employee'}
+
+    def __init__(self, name, email, password, pay_rate):
+        User.__init__(self, name, email, password)
+        self.pay_rate = pay_rate
 
 
 class Order(db.Model):
