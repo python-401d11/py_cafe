@@ -3,6 +3,7 @@ from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, DeleteForm
 from .models import db, Manager, Customer, Item, Order
+from .auth import login_required, authorization_required
 import requests
 import json
 import os
@@ -24,20 +25,23 @@ def customer():
 
 
 @app.route('/order', methods=['GET', 'POST'])
+@authorization_required(roles=['customer'])
 def order():
     form = OrderForm()
     if form.validate_on_submit():
-        items_list = [form.data['items']]
+        item_ids = [form.data['items']]
+        items = Item.query.filter(Item.id.in_(item_ids)).all()
         customer = Customer.query.filter_by(id=g.user.id).first()
         order = Order(
             customer=customer,
-            items=items_list
+            items=items
         )
         db.session.add(order)
-        dp.session.commit()
+        db.session.commit()
 
     items = Item.query.all()
     return render_template('order.html', items=items, form=form)
+
 
 @app.route('/item/add', methods=['GET', 'POST'])
 def add_items():
@@ -55,7 +59,8 @@ def add_items():
 
     return render_template('auth/add_items.html', form=form)
 
-@app.route('/item/delete', methods=['GET','POST']) # this is a DELETE
+
+@app.route('/item/delete', methods=['GET', 'POST'])  # this is a DELETE
 def delete_items():
     form = DeleteForm()
     if form.validate_on_submit():
@@ -63,22 +68,23 @@ def delete_items():
         item = Item.query.filter_by(name='name').first()
         db.session.delete(item)
         db.session.commit()
-    items= Item.query.all()
+    items = Item.query.all()
     return render_template('auth/delete_items.html', form=form, items=items)
 
-@app.route('/item/update', methods=['POST']) # this is a PUT
+
+@app.route('/item/update', methods=['POST'])  # this is a PUT
 def update_items():
     form = UpdateItemsForm()
     if form.validate_on_submit():
         item = Item(
-            name = form.data['name'],
-            cog = form.data['cost'],
-            price = form.data['price'],
-            inventory_count = form.data['count']
+            name=form.data['name'],
+            cog=form.data['cost'],
+            price=form.data['price'],
+            inventory_count=form.data['count']
         )
         db.session.add(item)
         db.session.commit()
-        return redirect(url_for('/')) 
+        return redirect(url_for('/'))
 
 
 @app.route('/reservation')
