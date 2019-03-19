@@ -25,13 +25,13 @@ class AddItemsForm(FlaskForm):
 
 
 class OrderForm(FlaskForm):
-    items = SelectField('items')
-    number_ordered = StringField('number_ordered', validators=[DataRequired()])
+    # items = SelectField('items')
+    item_ids = StringField('item_ids', validators=[DataRequired()], render_kw={"v-model": "orderItemIds"})
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.items.choices = [(str(item.id), item.name)
-                              for item in Item.query.all()]
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.items.choices = [(str(item.id), item.name)
+    #                           for item in Item.query.all()]
 
 
 class UpdateItemsForm(FlaskForm):
