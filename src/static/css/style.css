@@ -1,0 +1,12 @@
+.order-select {
+    cursor: pointer;
+}
+
+#orders {
+    display: grid;
+    grid-template-columns: fr fr;
+}
+
+#items-table {
+    grid-column-start: 0;
+}

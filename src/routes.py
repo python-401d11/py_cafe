@@ -29,9 +29,11 @@ def customer():
 def order():
     form = OrderForm()
     if form.validate_on_submit():
-        item_ids = [form.data['items']]
-        items = Item.query.filter(Item.id.in_(item_ids)).all()
+        item_ids = form.data['item_ids'].split(',')
+        #import pdb; pdb.set_trace()
+        items = [Item.query.get(i) for i in item_ids]
         customer = Customer.query.filter_by(id=g.user.id).first()
+
         order = Order(
             customer=customer,
             items=items
