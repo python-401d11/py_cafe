@@ -27,7 +27,20 @@ class AddItemsForm(FlaskForm):
 class OrderForm(FlaskForm):
     items = SelectField('items')
     number_ordered = StringField('number_ordered', validators=[DataRequired()])
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.items.choices = [str(item.id,item.name)for item in Item.query.all()]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.items.choices = [(item.id, item.name)for item in Item.query.all()]
+class UpdateItemsForm(FlaskForm):
+    name =SelectField('name')
+    price = StringField('price',validators=[DataRequired()])
+    cost =  StringField('cost',validators=[DataRequired()])
+    count =  StringField('count',validators=[DataRequired()])
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.items.choices = [str(item.id,item.name)for item in Item.query.all()] 
+class DeleteForm(FlaskForm):
+    name =SelectField('name')
+    def __init__(self,*args, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.items.choices = [str(item.id,item.name)for item in Item.query.all()] 
