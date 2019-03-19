@@ -3,6 +3,7 @@ from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, DeleteForm
 from .models import db, Manager, Customer, Item, Order
+from .models_reports import CustomerOrders
 from .auth import login_required, authorization_required
 import requests
 import json
@@ -11,6 +12,8 @@ import os
 
 @app.route('/')
 def home():
+    customer_orders = CustomerOrders(3)
+    print(customer_orders.test)
     return render_template('home.html'), 200
 
 
