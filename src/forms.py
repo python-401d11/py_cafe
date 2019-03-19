@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, PasswordField
 from wtforms.validators import DataRequired
-from .models import Manager, Customer, Employee, Order, OrderItems, Item
+from .models import Manager, Customer, Employee, Order, OrderItems, Item, User
 from flask import g
 
 
@@ -53,3 +53,10 @@ class DeleteForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
+class DeleteUserForm(FlaskForm):
+    users = SelectField('users')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.users.choices = [(str(user.id), user.name)
+                              for user in User.query.all()]
