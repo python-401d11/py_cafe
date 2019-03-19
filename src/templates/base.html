@@ -18,6 +18,7 @@
                     <li><a href="{{url_for(".order") }}">Order</a></li>
                     <li><a href="{{url_for(".add_items") }}">Add Item</a></li>
                     <li><a href="{{url_for(".delete_items") }}">Delete Item</a></li>
+                    <li><a href="{{url_for(".update_items") }}">Update Item</a></li>
                 </nav>
                 {% if g.user %}
                 <h3>Welcome, {{ g.user['id'] }}</h3>
