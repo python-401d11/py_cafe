@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Update Items</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <h2>Update Item:</h2>
+    <form action="{{ url_for(".update_items") }}" method = "POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label }}{{ form.name(size = 32)}}
+        {{ form.cost.label }}{{ form.cost (size = 32)}}
+        {{ form.price.label }}{{ form.price (size = 32)}}
+        {{ form.count.label }}{{ form.count (size = 32)}}
+        <input type="submit" name="update_item" id="update_item" value = "Go">
+    </form>
+</div>
+
+{% endblock content %}
