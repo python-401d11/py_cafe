@@ -59,3 +59,11 @@ def login():
         flash(error)
 
     return render_template('auth/login.html', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    flash('Thank you, bye for now')
+    return redirect(url_for('.login'))
