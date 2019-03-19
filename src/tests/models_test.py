@@ -20,7 +20,7 @@ class TestUserModels():
         assert manager.name == 'Tim'
         assert manager.email == 'tim@test.com'
         assert manager.password == '12345'
-    
+
     def test_user_query(self, customer, manager):
         c = Customer.query.all()
         m = Manager.query.all()
@@ -33,13 +33,13 @@ class TestItems():
 
     def test_create_item(self, items):
         assert items
-    
+
     def test_item_data(self, items):
         assert items[0].name == 'Biscuits and Gravy'
         assert items[1].price == 8.50
         assert items[0].cog == 6.54
         assert items[1].inventory_count == 22
-    
+
     def test_item_query(self, items):
         i = Item.query.all()
         assert i[0].name == 'Biscuits and Gravy'
@@ -50,7 +50,7 @@ class TestOrders():
 
     def test_create_order(self, customer, employee, items, order):
         assert order
-    
+
     def test_order_data(self, customer, employee, items, order):
         assert order.customer.name == 'Milo'
         assert order.employee.name == 'Dan'

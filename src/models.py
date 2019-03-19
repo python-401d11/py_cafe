@@ -27,39 +27,36 @@ class User(db.Model):
 class Manager(User):
     __tablename__ = 'managers'
 
-    id = db.Column(db.ForeignKey('users.id'), primary_key=True)
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'manager'
-    }
+    id = db.Column(
+        db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
+        primary_key=True
+    )
+    __mapper_args__ = {'polymorphic_identity': 'manager'}
 
 
 class Customer(User):
     __tablename__ = 'customers'
 
-    id = db.Column(db.ForeignKey('users.id'), primary_key=True)
     phone = db.Column(db.String(32))
-
-    orders = db.relationship(
-        'Order',
-        back_populates='customer'
+    id = db.Column(
+        db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
+        primary_key=True
     )
-    __mapper_args__ = {
-        'polymorphic_identity': 'customer'
-    }
+    orders = db.relationship('Order', back_populates='customer')
+    __mapper_args__ = {'polymorphic_identity': 'customer'}
 
 
-class Employee(db.Model):
+class Employee(User):
     __tablename__ = 'employees'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256))
     pay_rate = db.Column(db.Numeric(5, 2))
-
-    orders = db.relationship(
-        'Order',
-        back_populates='employee'
+    id = db.Column(
+        db.ForeignKey('users.id', ondelete='CASCADE', onupdate='CASCADE'),
+        primary_key=True
     )
+
+    orders = db.relationship('Order', back_populates='employee')
+    __mapper_args__ = {'polymorphic_identity': 'employee'}
 
 
 class Order(db.Model):
