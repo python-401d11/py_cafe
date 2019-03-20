@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm
-from .forms import DeleteForm, DeleteUserForm, ManagerForm
+from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemForm
 from .models import db, User, Manager, Customer, Item, Order
 from .models_reports import CustomerOrders
 from .auth import login_required, authorization_required
@@ -151,8 +151,23 @@ def by_customer():
 
     users = User.query.all()
     return render_template('/manager/by_customer.html', users=users, form=form, content=None)
+    
+    
+@app.route('/manager/by_item', methods=['GET','POST'])
+def by_item():
+    form = ItemForm()
+    if form.validate_on_submit():
+        id = form.data['items']
+        report = CustomerOrders(id)
+        content= report.customer_totals(id)
+        items = Item.query.all()
 
+        return render_template('/manager/by_item.html', items=items, form=form, content=content)
 
+    items = Item.query.all()
+    return render_template('/manager/by_item.html', items=items, form=form, content=None)
+    
+    
 @app.route('/reservation')
 def reservation():
     pass

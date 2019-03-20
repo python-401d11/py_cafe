@@ -45,7 +45,13 @@ class UpdateItemsForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
-
+class ItemForm(FlaskForm):
+    items = SelectField('items')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.items.choices = [(str(item.id), item.name)
+                              for item in Item.query.all()]
+    
 
 class DeleteForm(FlaskForm):
     items = SelectField('items')
@@ -55,7 +61,7 @@ class DeleteForm(FlaskForm):
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
 
-
+        
 class DeleteUserForm(FlaskForm):
     users = SelectField('users')
 
