@@ -13,6 +13,8 @@ import os
 
 @app.route('/')
 def home():
+    report = CustomerOrders(3)
+    report.customer_totals()
     return render_template('home.html'), 200
 
 
@@ -72,7 +74,7 @@ def add_items():
         db.session.commit()
         return redirect(url_for('.add_items'))
     items = Item.query.all()
-    return render_template('auth/add_items.html', form=form, items=items)
+    return render_template('items/add_items.html', form=form, items=items)
 
 
 @app.route('/item/delete', methods=['GET', 'POST'])  # this is a DELETE
@@ -85,7 +87,7 @@ def delete_items():
         db.session.commit()
         return redirect(url_for('.delete_items'))
     items = Item.query.all()
-    return render_template('auth/delete_items.html', form=form, items=items)
+    return render_template('items/delete_items.html', form=form, items=items)
 
 
 @app.route('/item/update', methods=['GET', 'POST'])  # this is a PUT
@@ -99,7 +101,7 @@ def update_items():
         db.session.commit()
         return redirect(url_for('.update_items'))
     items = Item.query.all()
-    return render_template('auth/update_items.html', form=form, items=items)
+    return render_template('items/update_items.html', form=form, items=items)
 
 
 @app.route('/all_users', methods=['GET', 'POST'])
@@ -136,7 +138,7 @@ def create_employee():
     pass
 
 
-@app.route('/auth/manager/by_customer', methods=['GET', 'POST'])
+@app.route('/manager/by_customer', methods=['GET', 'POST'])
 def by_customer():
     form = DeleteUserForm()
     if form.validate_on_submit():
@@ -145,17 +147,12 @@ def by_customer():
         content = report.item_totals(id)
         users = User.query.all()
 
-        return render_template('/auth/manager/by_customer.html', users=users, form=form, content=content)
+        return render_template('/manager/by_customer.html', users=users, form=form, content=content)
 
     users = User.query.all()
-    return render_template('/auth/manager/by_customer.html', users=users, form=form, content=None)
+    return render_template('/manager/by_customer.html', users=users, form=form, content=None)
 
 
 @app.route('/reservation')
 def reservation():
-    pass
-
-
-@app.route('/employee')
-def employee():
     pass
