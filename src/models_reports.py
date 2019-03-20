@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from .models import db, User, Customer, Manager, Employee, Order, OrderItems, Item
 
 
