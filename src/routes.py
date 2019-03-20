@@ -1,9 +1,9 @@
 from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
-from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, DeleteForm, DeleteUserForm
-from .models import db, User, Manager, Customer, Item, Order
-from .models_reports import CustomerOrders
+from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, DeleteForm, DeleteUserForm, ReservationForm
+from .models import db, User, Manager, Customer, Item, Order, Reservation
+# from .models_reports import CustomerOrders
 from .auth import login_required, authorization_required
 import requests
 import json
@@ -12,8 +12,8 @@ import os
 
 @app.route('/')
 def home():
-    customer_orders = CustomerOrders(3)
-    print(customer_orders.test)
+    # customer_orders = CustomerOrders(3)
+    # print(customer_orders.test)
     return render_template('home.html'), 200
 
 @app.route('/about')
@@ -107,9 +107,23 @@ def all_users():
     users = User.query.all()
     return render_template('/auth/manager/all_users.html', users=users, form=form)
 
-@app.route('/reservation')
+@app.route('/reservation',methods=['GET','POST'])
+@authorization_required(roles=['customer'])
 def reservation():
-    pass
+    form = ReservationForm()
+    if form.validate_on_submit():
+        # return('g user' + str(g.user.name))
+        reservation = Reservation(
+            date = form.data['date'], 
+            time = form.data['time'],
+            party = form.data['party'],
+            customer = Customer.query.filter_by(id=g.user.id).first()
+        )
+        db.session.add(reservation)
+        db.session.commit()    
+        return redirect(url_for('.reservation'))
+    reservations = Reservation.query.filter_by(id=g.user.id)    
+    return render_template('/auth/reservations.html', form=form, reservations=reservations)
 
 
 @app.route('/employee')
