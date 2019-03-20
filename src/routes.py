@@ -202,6 +202,3 @@ def by_item():
     return render_template('/manager/by_item.html', items=items, form=form, content=None)
     
     
-@app.route('/reservation')
-def reservation():
-    pass
