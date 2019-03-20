@@ -50,6 +50,12 @@ def order():
     return render_template('order.html', items=items, form=form)
 
 
+@app.route('/item', methods=['GET'])
+#@authorization_required(roles=['employee', 'manager'])
+def all_items():
+    items = Item.query.all()
+    return render_template('items/all_items.html', items=items)
+
 @app.route('/item/add', methods=['GET', 'POST'])
 def add_items():
     form = AddItemsForm()
@@ -63,8 +69,8 @@ def add_items():
         db.session.add(item)
         db.session.commit()
         return redirect(url_for('.add_items'))
-    items= Item.query.all()
-    return render_template('auth/add_items.html', form=form, items= items)
+    items = Item.query.all()
+    return render_template('auth/add_items.html', form=form, items=items)
 
 
 @app.route('/item/delete', methods=['GET', 'POST'])  # this is a DELETE

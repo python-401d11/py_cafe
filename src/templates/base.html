@@ -22,14 +22,25 @@
             <nav>
                 <ul>
                     <li><a href="{{url_for(".home") }}">Home</a></li>
-                    <li><a href="{{url_for(".register")}}">Register</a></li>
-                    <li><a href="{{url_for(".order") }}">Order</a></li>
-                    <li><a href="{{url_for(".add_items") }}">Add Item</a></li>
-                    <li><a href="{{url_for(".delete_items") }}">Delete Item</a></li>
-                    <li><a href="{{url_for(".update_items") }}">Update Item</a></li>
-                    <li><a href="{{url_for(".all_users") }}">Users</a></li>
                     <li><a href="{{url_for(".about") }}">About Us</a></li>
+                    {% if g.user %}
+                    <li><a href="{{url_for(".order") }}">Orders</a></li>
+                    {% endif %}
+                    {% if g.user.type in ('employee', 'manager') %}
+                    <li><a href="{{url_for(".all_items") }}">Items</a></li>
                     <li><a href="{{url_for(".by_customer") }}">Sales by Customer</a></li>
+                    {% endif %}
+                    {% if g.user.type in ('manager') %}
+                    <li><a href="{{url_for(".all_users") }}">Manage Users</a></li>
+                    {% endif %}
+                    <li><a href="{{url_for(".home") }}">Reservations</a></li>
+                    {% if not g.user %}
+                    <li><a href="{{url_for(".register")}}">Register</a></li>
+                    <li><a href="{{url_for(".login") }}">Login</a></li>
+                    {% endif %}
+                    {% if g.user %}
+                    <li><a href="{{url_for(".logout") }}">Logout</a></li>
+                    {% endif %}
                 </ul>
             </nav>
             </header>
