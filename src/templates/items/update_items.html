@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Update Items</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <h4>All Items</h4>
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Cost of Good</th>
+                <th>Inventory</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in  items %}
+            <tr>
+                <td>{{ item.name }}</td> <!-- Item Name from table-->
+                <td>{{ item.price }}</td> <!-- Item price from table-->
+                <td>{{ item.cog }}</td> <!-- Item price from table-->
+                <td>{{ item.inventory_count }}</td> <!-- Item price from table-->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Update Item</h4>
+    <form action="{{ url_for(".update_items") }}" method = "POST">
+        {{ form.hidden_tag() }}
+        {{ form.items.label }}{{ form.items()}}
+        {{ form.cost.label }}{{ form.cost (size = 32)}}
+        {{ form.price.label }}{{ form.price (size = 32)}}
+        {{ form.count.label }}{{ form.count (size = 32)}}
+        <input type="submit" name="update_item" id="update_item" value = "Go">
+    </form>
+</div>
+
+{% endblock content %}

@@ -5,29 +5,41 @@
 {% endblock title%}
 
 {% block content %}
-<table class="u-full-width">
+<div class="container">
+    <h4>Manage Users</h4>
+    <table class="u-full-width">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Phone Number</th>
-                <th>email</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Phone</th>
+                <th>Rate</th>
             </tr>
         </thead>
         <tbody>
             {% for user in  users %}
             <tr>
                 <td>{{ user.name }}</td> 
-                <td>{{ user.phone }}</td> 
                 <td>{{ user.email }}</td> 
+                <td>{{ user.type }}</td> 
+                <td>{{ user.phone }}</td>
+                <td>{{ user.pay_rate }}</td> 
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <h2>Delete User:</h2>
+
+    <a class="button" href="{{url_for(".register") }}">Create Customer</a>
+    <a class="button" href="{{url_for(".create_employee") }}">Create Employee</a>
+    <a class="button" href="{{url_for(".create_manager") }}">Create Manager</a>
+
+    <h4>Delete User</h4>
     <form class =hidden action="{{ url_for(".all_users") }}" method = "POST">
         {{ form.hidden_tag() }}
         {{ form.users.label }}{{ form.users()}}
         <input type="submit" name="delete_users" id="delete_users" value = "Go">
     </form>
+</div>
 {% endblock content %}
 

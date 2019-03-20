@@ -2,7 +2,6 @@
 body{
     margin-left: 5%;
 }
-
 .order-select {
     cursor: pointer;
 }
@@ -21,6 +20,7 @@ li {
     text-decoration: none;
     display: inline-block;
     margin-bottom: 5%;
+    color:red;  
 }
 h1{
     margin-top:5%;

@@ -49,7 +49,7 @@ def register():
         )
         db.session.add(customer)
         db.session.commit()
-        return redirect(url_for('/'))
+        return redirect(url_for('.home'))
     return render_template('auth/register.html', form=form)
 
 

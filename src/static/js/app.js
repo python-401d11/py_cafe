@@ -16,22 +16,22 @@ const vm = new Vue({
                 price: item_price
             }
             this.orderItems.push(item);
-            this.orderItemIds.push(item_id)
-            this.totalPrice += parseFloat(item_price);
-            console.log('orderItems: ' + this.orderItems);
-            console.log('orderItemIds: ' + this.orderItemIds);
+            this.orderItemIds.push(item_id);
+            this.totalPrice = this.orderItems.reduce((acc, curr) => {
+                return acc + parseFloat(curr.price);
+            }, 0);
         },
         removeFromOrder: function(event) {
             const item_id = event.target.dataset.id;
-            i = this.orderItems.findIndex((element) => {
+            const i = this.orderItems.findIndex((element) => {
                 return element.id === item_id;
             });
-            console.log(i)
             this.orderItems.splice(i, 1);
-            j = this.orderItemIds.indexOf(item_id);
+            const j = this.orderItemIds.indexOf(item_id);
             if (j > -1) this.orderItemIds.splice(j, 1);
-            console.log('orderItems: ' + this.orderItems);
-            console.log('orderItemIds: ' + this.orderItemIds);
+            this.totalPrice = this.orderItems.reduce((acc, curr) => {
+                return acc + parseFloat(curr.price);
+            }, 0);
         }
     },
     delimiters: ['[[',']]']

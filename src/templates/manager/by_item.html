@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Report By Items</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    {% if content != None %}
+        <table class="u-full-width">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Number Sold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in  content %}
+                    <tr>
+                        <td>{{ item[0] }}</td> <!-- Item Name from table-->
+                        <td>{{ item[1] }}</td> <!-- Item price from table-->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+    <h2>Select Item</h2>
+    <form class =hidden action="{{ url_for(".by_item") }}" method = "POST">
+        {{ form.hidden_tag() }}
+        {{ form.items.label }}{{ form.items()}}
+        <input type="submit" name="items id="items" value = "Go">
+    </form>
+    </form>
+</div>
+
+{% endblock content %}

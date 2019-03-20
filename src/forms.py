@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, PasswordField
+from wtforms import StringField, SelectField, PasswordField, HiddenField
 from wtforms.validators import DataRequired
 from .models import Manager, Customer, Employee, Order, OrderItems, Item, User
 from flask import g
@@ -29,13 +29,8 @@ class ReservationForm(FlaskForm):
     party = StringField('party', validators=[DataRequired()])
 
 class OrderForm(FlaskForm):
-    # items = SelectField('items')
-    item_ids = StringField('item_ids', validators=[DataRequired()], render_kw={"v-model": "orderItemIds"})
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.items.choices = [(str(item.id), item.name)
-    #                           for item in Item.query.all()]
+    item_ids = HiddenField('item_ids', validators=[DataRequired()], render_kw={
+                           "v-model": "orderItemIds"})
 
 
 class UpdateItemsForm(FlaskForm):
@@ -48,7 +43,13 @@ class UpdateItemsForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
-
+class ItemForm(FlaskForm):
+    items = SelectField('items')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.items.choices = [(str(item.id), item.name)
+                              for item in Item.query.all()]
+    
 
 class DeleteForm(FlaskForm):
     items = SelectField('items')
@@ -57,6 +58,8 @@ class DeleteForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
+
+        
 class DeleteUserForm(FlaskForm):
     users = SelectField('users')
 
@@ -65,3 +68,15 @@ class DeleteUserForm(FlaskForm):
         self.users.choices = [(str(user.id), user.name)
                               for user in User.query.all()]
 
+        
+class ManagerForm(FlaskForm):
+    name = StringField('name', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+
+
+class EmployeeForm(FlaskForm):
+    name = StringField('name', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+    pay_rate = StringField('pay rate')
