@@ -13,8 +13,6 @@ import os
 
 @app.route('/')
 def home():
-    report = CustomerOrders(3)
-    report.customer_totals()
     return render_template('home.html'), 200
 
 
@@ -136,6 +134,11 @@ def create_manager():
 @app.route('/user/manager', methods=['GET', 'POST'])
 def create_employee():
     pass
+
+
+@app.route('/manager', methods=['GET'])
+def reports():
+    return render_template('/manager/report_index.html')
 
 
 @app.route('/manager/by_customer', methods=['GET', 'POST'])
