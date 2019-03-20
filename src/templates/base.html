@@ -5,12 +5,10 @@
             <meta name = "viewport content" content = "width+device-width, initial-scal=1.0">
             <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
             <link rel="stylesheet" href=" {{ url_for("static", filename="css/normalize.css") }}">
-
             <link rel="stylesheet" href=" {{ url_for("static", filename="css/skeleton.css") }}">
             <link rel="stylesheet" href=" {{ url_for("static", filename="css/base.css") }}">
             <link rel="stylesheet" href=" {{ url_for("static", filename="css/layout.css") }}">
             <link rel="stylesheet" href=" {{ url_for("static", filename="css/module.css") }}">
-
         </head>
         <body>
             <header>
@@ -33,7 +31,7 @@
                     {% if g.user and g.user.type in ('manager') %}
                     <li><a href="{{url_for(".all_users") }}">Users</a></li>
                     {% endif %}
-                    <li><a href="{{url_for(".home") }}">Reservations</a></li>
+                    <li><a href="{{url_for(".reservation") }}">Reservations</a></li>
                     {% if not g.user %}
                     <li><a href="{{url_for(".register")}}">Register</a></li>
                     <li><a href="{{url_for(".login") }}">Login</a></li>

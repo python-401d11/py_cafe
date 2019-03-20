@@ -58,12 +58,28 @@ class Customer(User):
         primary_key=True
     )
     orders = db.relationship('Order', back_populates='customer')
+    reservations = db.relationship('Reservation', back_populates='customer')
     __mapper_args__ = {'polymorphic_identity': 'customer'}
 
     def __init__(self, name, email, password, phone):
         User.__init__(self, name, email, password)
         self.phone = phone
 
+class Reservation(db.Model):
+    __tablename__= 'reservations'
+    id = db.Column(
+        db.ForeignKey('customers.id',ondelete='CASCADE', onupdate='CASCADE'),
+        primary_key=True
+    )
+    # id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.String(32))
+    time = db.Column(db.String(32))
+    party = db.Column(db.String(32))
+
+    customer = db.relationship(
+        'Customer',
+        back_populates='reservations'
+    )
 
 class Employee(User):
     __tablename__ = 'employees'

@@ -23,6 +23,10 @@ class AddItemsForm(FlaskForm):
     cost = StringField('cost', validators=[DataRequired()])
     count = StringField('count', validators=[DataRequired()])
 
+class ReservationForm(FlaskForm):
+    date = StringField('date', validators=[DataRequired()])
+    time = StringField('time', validators=[DataRequired()])
+    party = StringField('party', validators=[DataRequired()])
 
 class OrderForm(FlaskForm):
     item_ids = HiddenField('item_ids', validators=[DataRequired()], render_kw={
@@ -64,7 +68,7 @@ class DeleteUserForm(FlaskForm):
         self.users.choices = [(str(user.id), user.name)
                               for user in User.query.all()]
 
-
+        
 class ManagerForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])
