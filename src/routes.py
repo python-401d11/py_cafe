@@ -12,8 +12,6 @@ import os
 
 @app.route('/')
 def home():
-    customer_orders = CustomerOrders(3)
-    print(customer_orders.test)
     return render_template('home.html'), 200
 
 @app.route('/about')
@@ -106,6 +104,22 @@ def all_users():
         return redirect(url_for('.all_users'))
     users = User.query.all()
     return render_template('/auth/manager/all_users.html', users=users, form=form)
+
+@app.route('/auth/manager/by_customer', methods=['GET','POST'])
+def by_customer():
+    form = DeleteUserForm()
+    if form.validate_on_submit():
+        id = form.data['users']
+        report = CustomerOrders(id)
+        content= report.item_totals(id)
+        users = User.query.all()
+
+        return render_template('/auth/manager/by_customer.html', users=users, form=form, content=content)
+
+    users = User.query.all()
+    return render_template('/auth/manager/by_customer.html', users=users, form=form, content=None)
+    
+    
 
 @app.route('/reservation')
 def reservation():
