@@ -28,8 +28,7 @@
                     {% endif %}
                     {% if g.user and g.user.type in ('employee', 'manager') %}
                     <li><a href="{{url_for(".all_items") }}">Items</a></li>
-                    <li><a href="{{url_for(".by_customer") }}">Sales by Customer</a></li>
-                    <li><a href="{{url_for(".by_item") }}">Sales by Item</a></li>
+                    <li><a href="{{url_for(".reports") }}">Reports</a></li>
                     {% endif %}
                     {% if g.user and g.user.type in ('manager') %}
                     <li><a href="{{url_for(".all_users") }}">Users</a></li>
