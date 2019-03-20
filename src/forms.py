@@ -26,7 +26,8 @@ class AddItemsForm(FlaskForm):
 
 class OrderForm(FlaskForm):
     # items = SelectField('items')
-    item_ids = StringField('item_ids', validators=[DataRequired()], render_kw={"v-model": "orderItemIds"})
+    item_ids = StringField('item_ids', validators=[DataRequired()], render_kw={
+                           "v-model": "orderItemIds"})
 
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
@@ -60,6 +61,7 @@ class DeleteForm(FlaskForm):
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
 
+        
 class DeleteUserForm(FlaskForm):
     users = SelectField('users')
 
@@ -67,3 +69,9 @@ class DeleteUserForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.users.choices = [(str(user.id), user.name)
                               for user in User.query.all()]
+
+
+class ManagerForm(FlaskForm):
+    name = StringField('name', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired()])
+    password = StringField('password', validators=[DataRequired()])
