@@ -27,3 +27,18 @@ class CustomerOrders():
         for item in items:
             counts.append((item.name,order_items_list.count(item.id)))
         return counts
+     
+    def customer_totals(self, item_id=0):
+        rtn=[]
+        SQL = """ 
+        select users.name, count(items.id), items.name from users
+inner join customers on users.id = customers.id
+inner join orders on customers.id=orders.cust_id 
+inner join order_items on orders.id=order_items.order_id 
+inner join items on order_items.item_id=items.id
+where items.id={}
+group by users.name, items.name; """.format(item_id)
+        test = db.session.execute(SQL)
+        for row in test:
+            rtn.append(row)
+        return rtn
