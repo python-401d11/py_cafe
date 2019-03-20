@@ -2,8 +2,8 @@ from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm
-from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemForm
-from .models import db, User, Manager, Customer, Item, Order
+from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemForm, EmployeeForm
+from .models import db, User, Manager, Customer, Employee, Item, Order
 from .models_reports import CustomerOrders
 from .auth import login_required, authorization_required
 import requests
@@ -131,9 +131,21 @@ def create_manager():
     return render_template('/user/create_manager.html', form=form)
 
 
-@app.route('/user/manager', methods=['GET', 'POST'])
+@app.route('/user/employee', methods=['GET', 'POST'])
 def create_employee():
-    pass
+    form = EmployeeForm()
+    if form.validate_on_submit():
+        employee = Employee(
+            name=form.data['name'],
+            email=form.data['email'],
+            password=form.data['password'],
+            pay_rate=form.data['pay_rate']
+        )
+        db.session.add(employee)
+        db.session.commit()
+        return redirect(url_for('.all_users'))
+
+    return render_template('/user/create_employee.html', form=form)
 
 
 @app.route('/manager', methods=['GET'])
