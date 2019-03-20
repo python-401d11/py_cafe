@@ -26,12 +26,12 @@
                     {% if g.user %}
                     <li><a href="{{url_for(".order") }}">Orders</a></li>
                     {% endif %}
-                    {% if g.user.type in ('employee', 'manager') %}
+                    {% if g.user and g.user.type in ('employee', 'manager') %}
                     <li><a href="{{url_for(".all_items") }}">Items</a></li>
                     <li><a href="{{url_for(".by_customer") }}">Sales by Customer</a></li>
                     {% endif %}
-                    {% if g.user.type in ('manager') %}
-                    <li><a href="{{url_for(".all_users") }}">Manage Users</a></li>
+                    {% if g.user and g.user.type in ('manager') %}
+                    <li><a href="{{url_for(".all_users") }}">Users</a></li>
                     {% endif %}
                     <li><a href="{{url_for(".home") }}">Reservations</a></li>
                     {% if not g.user %}

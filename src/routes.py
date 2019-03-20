@@ -1,7 +1,8 @@
 from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
-from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, DeleteForm, DeleteUserForm
+from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm
+from .forms import DeleteForm, DeleteUserForm, ManagerForm
 from .models import db, User, Manager, Customer, Item, Order
 from .models_reports import CustomerOrders
 from .auth import login_required, authorization_required
@@ -13,6 +14,7 @@ import os
 @app.route('/')
 def home():
     return render_template('home.html'), 200
+
 
 @app.route('/about')
 def about():
@@ -30,12 +32,11 @@ def customer():
 
 
 @app.route('/order', methods=['GET', 'POST'])
-@authorization_required(roles=['customer'])
+@authorization_required(roles=['customer', 'employee', 'manager'])
 def order():
     form = OrderForm()
     if form.validate_on_submit():
         item_ids = form.data['item_ids'].split(',')
-        #import pdb; pdb.set_trace()
         items = [Item.query.get(i) for i in item_ids]
         customer = Customer.query.filter_by(id=g.user.id).first()
 
@@ -51,10 +52,11 @@ def order():
 
 
 @app.route('/item', methods=['GET'])
-#@authorization_required(roles=['employee', 'manager'])
+# @authorization_required(roles=['employee', 'manager'])
 def all_items():
     items = Item.query.all()
     return render_template('items/all_items.html', items=items)
+
 
 @app.route('/item/add', methods=['GET', 'POST'])
 def add_items():
@@ -82,24 +84,25 @@ def delete_items():
         db.session.delete(item)
         db.session.commit()
         return redirect(url_for('.delete_items'))
-    items= Item.query.all()
+    items = Item.query.all()
     return render_template('auth/delete_items.html', form=form, items=items)
 
-@app.route('/item/update', methods=['GET','POST']) # this is a PUT
+
+@app.route('/item/update', methods=['GET', 'POST'])  # this is a PUT
 def update_items():
     form = UpdateItemsForm()
     if form.validate_on_submit():
         item = Item.query.get(form.data['items'])
-        item.cog=form.data['cost'],
-        item.price=form.data['price'],
-        item.inventory_count=form.data['count']
-        # db.session.add(item)
+        item.cog = form.data['cost'],
+        item.price = form.data['price'],
+        item.inventory_count = form.data['count']
         db.session.commit()
         return redirect(url_for('.update_items'))
-    items= Item.query.all()
-    return render_template('auth/update_items.html', form=form, items=items) 
+    items = Item.query.all()
+    return render_template('auth/update_items.html', form=form, items=items)
 
-@app.route('/auth/manager/all_users', methods=['GET','POST'])
+
+@app.route('/all_users', methods=['GET', 'POST'])
 def all_users():
     form = DeleteUserForm()
     if form.validate_on_submit():
@@ -109,23 +112,44 @@ def all_users():
         db.session.commit()
         return redirect(url_for('.all_users'))
     users = User.query.all()
-    return render_template('/auth/manager/all_users.html', users=users, form=form)
+    return render_template('/user/all_users.html', users=users, form=form)
 
-@app.route('/auth/manager/by_customer', methods=['GET','POST'])
+
+@app.route('/user/manager', methods=['GET', 'POST'])
+def create_manager():
+    form = ManagerForm()
+    if form.validate_on_submit():
+        manager = Manager(
+            name=form.data['name'],
+            email=form.data['email'],
+            password=form.data['password']
+        )
+        db.session.add(manager)
+        db.session.commit()
+        return redirect(url_for('.all_users'))
+
+    return render_template('/user/create_manager.html', form=form)
+
+
+@app.route('/user/manager', methods=['GET', 'POST'])
+def create_employee():
+    pass
+
+
+@app.route('/auth/manager/by_customer', methods=['GET', 'POST'])
 def by_customer():
     form = DeleteUserForm()
     if form.validate_on_submit():
         id = form.data['users']
         report = CustomerOrders(id)
-        content= report.item_totals(id)
+        content = report.item_totals(id)
         users = User.query.all()
 
         return render_template('/auth/manager/by_customer.html', users=users, form=form, content=content)
 
     users = User.query.all()
     return render_template('/auth/manager/by_customer.html', users=users, form=form, content=None)
-    
-    
+
 
 @app.route('/reservation')
 def reservation():
