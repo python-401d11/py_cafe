@@ -1,0 +1,21 @@
+header { grid-area: header; }
+nav { grid-area: nav; }
+main { grid-area: main; }
+footer { grid-area: footer; }
+
+body {
+    display: grid;
+    grid-template-areas:    "header header"
+                            "nav main"
+                            "footer footer";
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 120px 1fr 30px;
+    min-height: 100vh;
+}
+
+header h5 {
+    float: right;
+}
+main {
+    padding-top: 14px;
+}

@@ -1,0 +1,12 @@
+#items-table td.btn-add {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px;
+    background-color: springgreen;
+}
+#order-items-table td.btn-remove {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 10px;
+    background-color: orangered;
+}
