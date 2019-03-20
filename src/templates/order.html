@@ -17,7 +17,7 @@
             {% for item in  items %}
             <tr>
                 <td>{{ item.name }}</td> <!-- Item Name from table-->
-                <td>{{ item.price }}</td> <!-- Item price from table-->
+                <td>${{ item.price }}</td> <!-- Item price from table-->
                 <td v-on:click="addToOrder($event)"
                     class="order-select"
                     data-id="{{ item.id }}" 
@@ -37,13 +37,13 @@
         <tbody>
             <tr v-for="item in orderItems">
                 <td>[[ item.name ]]</td>
-                <td>[[ item.price ]]</td>
+                <td>$[[ item.price ]]</td>
                 <td v-on:click="removeFromOrder($event)" 
                     v-bind:data-id="item.id">Remove</td>
             </tr>
             <tr>
                 <td>Total Price:</td>
-                <td>[[ totalPrice ]]</td>
+                <td>$[[ totalPrice ]]</td>
             </tr>
         </tbody>
     </table>
