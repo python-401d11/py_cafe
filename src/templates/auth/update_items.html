@@ -7,27 +7,29 @@
 
 {% block content %}
 <div class="container">
-        <table class="u-full-width">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Price</th>
-                        <th>Cost of Good</th>
-                        <th>Inventory</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in  items %}
-                    <tr>
-                        <td>{{ item.name }}</td> <!-- Item Name from table-->
-                        <td>{{ item.price }}</td> <!-- Item price from table-->
-                        <td>{{ item.cog }}</td> <!-- Item price from table-->
-                        <td>{{ item.inventory_count }}</td> <!-- Item price from table-->
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-    <h2>Update Item:</h2>
+    <h4>All Items</h4>
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Cost of Good</th>
+                <th>Inventory</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in  items %}
+            <tr>
+                <td>{{ item.name }}</td> <!-- Item Name from table-->
+                <td>{{ item.price }}</td> <!-- Item price from table-->
+                <td>{{ item.cog }}</td> <!-- Item price from table-->
+                <td>{{ item.inventory_count }}</td> <!-- Item price from table-->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Update Item</h4>
     <form action="{{ url_for(".update_items") }}" method = "POST">
         {{ form.hidden_tag() }}
         {{ form.items.label }}{{ form.items()}}
