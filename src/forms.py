@@ -6,6 +6,9 @@ from flask import g
 
 
 class RegisterForm(FlaskForm):
+    """
+    Registration form
+    """
     name = StringField('name', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])
     phone = StringField('phone', validators=[DataRequired()])
@@ -13,11 +16,17 @@ class RegisterForm(FlaskForm):
 
 
 class AuthForm(FlaskForm):
+    """
+    login authentication form
+    """
     email = StringField('email', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
 
 
 class AddItemsForm(FlaskForm):
+    """
+    form to add items
+    """
     name = StringField('name', validators=[DataRequired()])
     price = StringField('price', validators=[DataRequired()])
     cost = StringField('cost', validators=[DataRequired()])
@@ -25,12 +34,18 @@ class AddItemsForm(FlaskForm):
 
 
 class ReservationForm(FlaskForm):
+    """
+    reservations form
+    """
     date = StringField('date', validators=[DataRequired()])
     time = StringField('time', validators=[DataRequired()])
     party = StringField('party', validators=[DataRequired()])
 
 
 class OrderForm(FlaskForm):
+    """
+    order form
+    """
     item_ids = HiddenField('item_ids', validators=[DataRequired()], render_kw={
                            "v-model": "orderItemIds"})
     customer = SelectField('customer', default=None)
@@ -45,6 +60,9 @@ class OrderForm(FlaskForm):
 
 
 class UpdateItemsForm(FlaskForm):
+    """
+    update items form
+    """
     items = SelectField('items')
     price = StringField('price', validators=[DataRequired()])
     cost = StringField('cost', validators=[DataRequired()])
@@ -57,6 +75,9 @@ class UpdateItemsForm(FlaskForm):
 
 
 class ItemForm(FlaskForm):
+    """
+    item form
+    """
     items = SelectField('items')
 
     def __init__(self, *args, **kwargs):
@@ -66,6 +87,9 @@ class ItemForm(FlaskForm):
 
 
 class DeleteForm(FlaskForm):
+    """
+    delete item form
+    """
     items = SelectField('items')
 
     def __init__(self, *args, **kwargs):
@@ -75,6 +99,9 @@ class DeleteForm(FlaskForm):
 
 
 class DeleteUserForm(FlaskForm):
+    """
+    delete user form
+    """
     users = SelectField('users')
 
     def __init__(self, *args, **kwargs):
@@ -84,12 +111,18 @@ class DeleteUserForm(FlaskForm):
 
 
 class ManagerForm(FlaskForm):
+    """
+    create manager form
+    """
     name = StringField('name', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
 
 
 class EmployeeForm(FlaskForm):
+    """
+    employee form
+    """
     name = StringField('name', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
