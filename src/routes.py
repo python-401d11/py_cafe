@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, ReservationForm
-from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemForm, EmployeeForm
+from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemForm, EmployeeForm, DateTimeForm
 from .models import db, User, Manager, Customer, Employee, Item, Order, Reservation
 from .models_reports import CustomerOrders
 from .auth import login_required, authorization_required
@@ -231,6 +231,24 @@ def by_customer():
 
     users = User.query.all()
     return render_template('/manager/by_customer.html', users=users, form=form, content=None)
+
+@app.route('/manager/by_time', methods=['GET', 'POST'])
+def by_time():
+    form = DateTimeForm()
+    if form.validate_on_submit():
+        start_date = form.data['start_date']
+        end_date = form.data['end_date']
+        start_time = form.data['start_time']
+        end_time = form.data['end_time']
+        print('valid')
+        print((start_date, end_date))
+        sql_start_time = (str(start_date)+' ' +str(start_time))
+        sql_end_time = (str(end_date)+' ' +str(end_time))
+        report = CustomerOrders(id)
+        content = report.time(sql_start_time,sql_end_time)
+        return render_template('/manager/by_time.html', form=form, content=content)
+
+    return render_template('/manager/by_time.html', form=form, content=None)
 
 
 @app.route('/manager/by_item', methods=['GET', 'POST'])
