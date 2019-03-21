@@ -173,20 +173,6 @@ def reservation():
     return render_template('/auth/reservations.html', form=form, reservations=reservations)
 
 
-@app.route('/all_users', methods=['GET', 'POST'])
-@authorization_required(roles=['manager'])
-def all_users():
-    form = DeleteUserForm()
-    if form.validate_on_submit():
-        id = form.data['users']
-        user = User.query.filter_by(id=id).first()
-        db.session.delete(user)
-        db.session.commit()
-        return redirect(url_for('.all_users'))
-    users = User.query.all()
-    return render_template('/user/all_users.html', users=users, form=form)
-
-
 @app.route('/user/manager', methods=['GET', 'POST'])
 #@authorization_required(roles=['manager'])
 def create_manager():
