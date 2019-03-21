@@ -153,6 +153,7 @@ class Item(db.Model):
     price = db.Column(db.Numeric(10, 2))
     cog = db.Column(db.Numeric(10, 2))
     inventory_count = db.Column(db.Integer, default=0)
+    active = db.Column(db.Boolean, default=True)
 
     orders = db.relationship(
         'Order',

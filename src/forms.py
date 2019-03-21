@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, PasswordField, HiddenField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email
 from .models import Manager, Customer, Employee, Order, OrderItems, Item, User
 from flask import g
 
@@ -53,7 +53,7 @@ class UpdateItemsForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
-                              for item in Item.query.all()]
+                              for item in Item.query.filter_by(active=True).all()]
 
 
 class ItemForm(FlaskForm):
@@ -62,7 +62,7 @@ class ItemForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
-                              for item in Item.query.all()]
+                              for item in Item.query.filter_by(active=True).all()]
 
 
 class DeleteForm(FlaskForm):
@@ -71,7 +71,7 @@ class DeleteForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
-                              for item in Item.query.all()]
+                              for item in Item.query.filter_by(active=True).all()]
 
 
 class DeleteUserForm(FlaskForm):
@@ -91,6 +91,6 @@ class ManagerForm(FlaskForm):
 
 class EmployeeForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
-    email = StringField('email', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired(), Email()])
     password = PasswordField('password', validators=[DataRequired()])
     pay_rate = StringField('pay rate')

@@ -70,7 +70,7 @@ def order():
 @app.route('/item', methods=['GET'])
 # @authorization_required(roles=['employee', 'manager'])
 def all_items():
-    items = Item.query.all()
+    items = Item.query.filter_by(active=True).all()
     return render_template('items/all_items.html', items=items)
 
 
@@ -87,7 +87,7 @@ def add_items():
         db.session.add(item)
         db.session.commit()
         return redirect(url_for('.add_items'))
-    items = Item.query.all()
+    items = Item.query.filter_by(active=True).all()
     return render_template('items/add_items.html', form=form, items=items)
 
 
@@ -97,7 +97,7 @@ def delete_items():
     if form.validate_on_submit():
         name = form.data['items']
         item = Item.query.filter_by(id=name).first()
-        db.session.delete(item)
+        item.active = False
         db.session.commit()
         return redirect(url_for('.delete_items'))
     items = Item.query.all()
@@ -114,7 +114,7 @@ def update_items():
         item.inventory_count = form.data['count']
         db.session.commit()
         return redirect(url_for('.update_items'))
-    items = Item.query.all()
+    items = Item.query.filter_by(active=True).all()
     return render_template('items/update_items.html', form=form, items=items)
 
 
