@@ -1,3 +1,4 @@
+/* -------- Orders page -------- */
 #orders {
     display: grid;
     column-gap: 40px;
@@ -70,6 +71,20 @@ a.button {
     cursor: pointer;
     box-sizing: border-box;
 }
-img {
+
+
+/* -------- About Us page -------- */
+#about h5 {
+    font-size: 1.4em;
+}
+#about h4 {
+    margin-bottom: 0px;
+}
+#about img {
     width:200px;
+    margin: 0px 20px 30px 0px;
+    float: left;
+}
+#about div {
+    clear: both;
 }
