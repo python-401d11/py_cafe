@@ -48,8 +48,7 @@ inner join customers on users.id = customers.id
 inner join orders on customers.id=orders.cust_id 
 inner join order_items on orders.id=order_items.order_id 
 inner join items on order_items.item_id=items.id
-where items.name='cheeseburger'
-and orders.date_created > '{}' 
+where orders.date_created > '{}' 
 and orders.date_created < '{}' 
 group by users.name, orders.date_created, items.name;""".format(start_time,end_time)
         test = db.session.execute(SQL)
