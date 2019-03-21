@@ -33,11 +33,11 @@ class TestClass():
         assert rv.status_code == 200
         assert b'<th>Name</th>' in rv.data 
 
-    def test_reservation(self, client, manager):
+    def test_reservation(self, client, auth_manager):
         """
         test reservation route
         """
         rv = client.get('/reservation')
-        assert rv.status_code == 302
-        assert b'<h3>Your Reservations</h3>' in rv.data    
+        assert rv.status_code == 200
+        assert b'<title>Make a Reservation</title>' in rv.data
       
