@@ -1,29 +1,66 @@
 {% extends "base.html" %}
-{% block title}
-<title>Order Page</title>
-
-{% endblock title}
-<div class = "container">
-    <h2> Py Cafe Menu</h2>
-    <table class="u-full-width">
-    <thead>
-        <tr>
-            <th>Item</th>
-            <th>Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in  items %}
-        <tr>
-            <td>{{}}</td>   <!-- Item Name from table-->
-            <td>{{}}</td>   <!-- Item price from table-->
-        </tr>
-        {% endfor %}
-    </tbody>
-    </table>
-    <form action="{{ url_for(".order") }} method="POST">
-        {{ form.hidden_tag()}}
-        {{ form.item_ordered.label }}{{ form.item_ordered}}
-        {{ form.number_ordered.label }}{{ form.number_ordered}}
-    </form>
+{% block title %}
+<title>Order</title>
+{% endblock title %}
+{% block content %}
+<div class="container">
+    <h4>Py Cafe Menu</h4>
+    <div id="orders">
+        <table id="items-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in  items %}
+                <tr>
+                    <td>{{ item.name }}</td> <!-- Item Name from table-->
+                    <td>${{ item.price }}</td> <!-- Item price from table-->
+                    <td v-on:click="addToOrder($event)"
+                        class="btn-add"
+                        data-id="{{ item.id }}" 
+                        data-name="{{ item.name }}" 
+                        data-price="{{ item.price }}">+</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form id="order-form" action="{{ url_for(".order") }}" method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.item_ids }}
+            {% if g.user.type != 'customer' %}
+                {{ form.customer.label }}{{ form.customer() }}
+            {% endif %}
+            {% if g.user.type == 'manager' %}
+                {{ form.employee.label }}{{ form.employee() }}
+            {% endif %}
+            <input id="order-form-btn" type="submit" value="Go">
+        </form>
+        <table id="order-items-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in orderItems">
+                    <td>[[ item.name ]]</td>
+                    <td>$[[ item.price ]]</td>
+                    <td v-on:click="removeFromOrder($event)"
+                        class="btn-remove"
+                        v-bind:data-id="item.id">-</td>
+                </tr>
+                <tr>
+                    <td>Total Price:</td>
+                    <td>$[[ totalPrice ]]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="{{ url_for("static", filename="js/app.js") }}"></script>
+{% endblock content %}

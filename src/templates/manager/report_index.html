@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Reports</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <h4>Reports</h4>
+
+    <p>Total number of each item sold, by customer</p>
+    <a class="button" href="{{url_for(".by_customer") }}">Go</a>
+
+    <p>Total customer sales, by item</p>
+    <a class="button" href="{{url_for(".by_item") }}">Go</a>
+    <p>Total sales, by time</p>
+    <a class="button" href="{{url_for(".by_time") }}">Go</a>
+
+</div>
+
+{% endblock content %}

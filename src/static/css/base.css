@@ -1,0 +1,45 @@
+header, footer {
+    padding: 0px 20px;
+}
+nav ul li {
+    list-style-type: none;
+    margin: 0px;
+}
+nav ul li a {
+    display: block;
+    margin: 0px;
+    padding: 5px;
+    padding-left: 20px;
+    border: 1px solid darkgrey;
+    border-top: none;
+    color: navy;
+    text-decoration: none;
+    font-weight: bold;
+}
+nav ul li a:hover {
+    background-color: ivory;
+}
+header {
+    border-bottom: 2px solid darkblue;
+}
+footer {
+    border-top: 2px solid darkorange;
+    background-color: navajowhite;
+    height: 30px;
+}
+
+table th {
+    text-align: left;
+    padding: 10px 18px;
+}
+table tr:nth-child(odd) td {
+    background-color: whitesmoke;
+}
+table tr:nth-child(even) td {
+    background-color: ivory;
+}
+table tr td {
+    padding: 4px 18px;
+    text-align: left;
+    border-bottom: 1px solid #E1E1E1;
+}
