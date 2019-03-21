@@ -48,14 +48,15 @@ class TestItems():
         assert items
 
     def test_item_data(self, items):
-        assert items[0].name == 'Biscuits and Gravy'
+        assert items[1].name == 'Cheeseburger'
         assert items[1].price == 8.50
-        assert items[0].cog == 6.54
+        assert items[1].cog == 5.00
         assert items[1].inventory_count == 22
 
     def test_item_query(self, items):
         i = Item.query.all()
-        assert i[0].name == 'Biscuits and Gravy'
+        assert i[0].name == 'Cheeseburger'
+        assert i[1].name == 'Biscuits and Gravy'
 
 
 class TestOrders():
