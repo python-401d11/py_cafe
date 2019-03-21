@@ -1,6 +1,6 @@
 # py_cafe
 
-**Authors**: Dan Huyle, Tim Schoen, Milo Anderson
+**Authors**: Dan-Huy Le, Tim Schoen, Milo Anderson
 
 **Version**: 0.0.0
 
