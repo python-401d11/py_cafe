@@ -70,3 +70,6 @@ a.button {
     cursor: pointer;
     box-sizing: border-box;
 }
+img {
+    width:200px;
+}
