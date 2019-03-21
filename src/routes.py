@@ -36,7 +36,6 @@ def customer():
 def order():
     form = OrderForm()
     if form.validate_on_submit():
-        import pdb; pdb.set_trace()
         item_ids = form.data['item_ids'].split(',')
         items = [Item.query.get(i) for i in item_ids]
 

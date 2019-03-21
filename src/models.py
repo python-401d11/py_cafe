@@ -102,7 +102,7 @@ class Order(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     date_created = db.Column(db.DateTime, default=dt.now())
-    cust_id = db.Column(db.ForeignKey('customers.id'), nullable=False)
+    cust_id = db.Column(db.ForeignKey('customers.id'))
     empl_id = db.Column(db.ForeignKey('employees.id'))
 
     customer = db.relationship(
