@@ -215,3 +215,4 @@ def by_item():
 
     items = Item.query.all()
     return render_template('/manager/by_item.html', items=items, form=form, content=None)
+
