@@ -6,6 +6,12 @@ const vm = new Vue({
         totalPrice: 0
     },
     methods: {
+        updateTotalPrice: function() {
+            this.totalPrice = this.orderItems.reduce((acc, curr) => {
+                return acc + parseFloat(curr.price);
+            }, 0);
+            this.totalPrice = Number((this.totalPrice).toFixed(2));
+        },
         addToOrder: function(event) {
             const item_id = event.target.dataset.id;
             const item_name = event.target.dataset.name;
@@ -17,9 +23,7 @@ const vm = new Vue({
             }
             this.orderItems.push(item);
             this.orderItemIds.push(item_id);
-            this.totalPrice = this.orderItems.reduce((acc, curr) => {
-                return acc + parseFloat(curr.price);
-            }, 0);
+            this.updateTotalPrice();
         },
         removeFromOrder: function(event) {
             const item_id = event.target.dataset.id;
@@ -29,9 +33,7 @@ const vm = new Vue({
             this.orderItems.splice(i, 1);
             const j = this.orderItemIds.indexOf(item_id);
             if (j > -1) this.orderItemIds.splice(j, 1);
-            this.totalPrice = this.orderItems.reduce((acc, curr) => {
-                return acc + parseFloat(curr.price);
-            }, 0);
+            this.updateTotalPrice();
         }
     },
     delimiters: ['[[',']]']

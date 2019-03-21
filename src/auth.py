@@ -79,5 +79,4 @@ def login():
 @login_required
 def logout():
     session.clear()
-    flash('Thank you, bye for now')
     return redirect(url_for('.login'))

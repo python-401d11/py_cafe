@@ -65,21 +65,6 @@ class Customer(User):
         User.__init__(self, name, email, password)
         self.phone = phone
 
-class Reservation(db.Model):
-    __tablename__= 'reservations'
-    id = db.Column(
-        db.ForeignKey('customers.id',ondelete='CASCADE', onupdate='CASCADE'),
-        primary_key=True
-    )
-    # id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.String(32))
-    time = db.Column(db.String(32))
-    party = db.Column(db.String(32))
-
-    customer = db.relationship(
-        'Customer',
-        back_populates='reservations'
-    )
 
 class Employee(User):
     __tablename__ = 'employees'
@@ -97,12 +82,27 @@ class Employee(User):
         self.pay_rate = pay_rate
 
 
+class Reservation(db.Model):
+    __tablename__ = 'reservations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    cust_id = db.Column(db.ForeignKey('customers.id', ondelete='CASCADE'))
+    date = db.Column(db.String(32))
+    time = db.Column(db.String(32))
+    party = db.Column(db.String(32))
+
+    customer = db.relationship(
+        'Customer',
+        back_populates='reservations'
+    )
+
+
 class Order(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
     date_created = db.Column(db.DateTime, default=dt.now())
-    cust_id = db.Column(db.ForeignKey('customers.id'), nullable=False)
+    cust_id = db.Column(db.ForeignKey('customers.id'))
     empl_id = db.Column(db.ForeignKey('employees.id'))
 
     customer = db.relationship(
@@ -119,12 +119,13 @@ class Order(db.Model):
         back_populates='orders'
     )
 
-    def __init__(self, items, customer):
+    def __init__(self, items, customer, employee):
         for item in items:
             item.inventory_count -= 1
             db.session.commit()
         self.items = items
         self.customer = customer
+        self.employee = employee
 
 
 class OrderItems(db.Model):
