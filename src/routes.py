@@ -26,6 +26,7 @@ def about():
     """
     return render_template('about_us.html'), 200
 
+
 @app.route('/order', methods=['GET', 'POST'])
 @authorization_required(roles=['customer', 'employee', 'manager'])
 def order():
@@ -36,7 +37,6 @@ def order():
     if form.validate_on_submit():
         item_ids = form.data['item_ids'].split(',')
         items = [Item.query.get(i) for i in item_ids]
-
         customer = None
         if g.user.type == 'customer':
             customer = Customer.query.get(g.user.id)
@@ -132,6 +132,7 @@ def update_items():
     items = Item.query.filter_by(active=True).all()
     return render_template('items/update_items.html', form=form, items=items)
 
+
 @app.route('/all_users', methods=['GET', 'POST'])
 @authorization_required(roles=['manager'])
 def all_users():
@@ -150,7 +151,7 @@ def all_users():
 
 
 @app.route('/reservation', methods=['GET', 'POST'])
-@authorization_required(roles=['customer','manager', 'employee'])
+@authorization_required(roles=['customer', 'manager', 'employee'])
 def reservation():
     """
     route handler for reservations
@@ -166,15 +167,15 @@ def reservation():
         db.session.add(reservation)
         db.session.commit()
         return redirect(url_for('.reservation'))
-    if g.user.type == 'manager' or q.user.type == 'employee':
+    if g.user.type == 'manager' or g.user.type == 'employee':
         reservations = Reservation.query.all()
     else:
         reservations = Reservation.query.filter_by(cust_id=g.user.id).all()
-    return render_template('/auth/reservations.html', form=form, reservations=reservations)
+    return render_template('/reservations.html', form=form, reservations=reservations)
 
 
 @app.route('/user/manager', methods=['GET', 'POST'])
-#@authorization_required(roles=['manager'])
+# @authorization_required(roles=['manager'])
 def create_manager():
     """
     route handler to create a manager role
@@ -241,6 +242,7 @@ def by_customer():
     users = User.query.all()
     return render_template('/manager/by_customer.html', users=users, form=form, content=None)
 
+
 @app.route('/manager/by_time', methods=['GET', 'POST'])
 def by_time():
     form = DateTimeForm()
@@ -251,10 +253,10 @@ def by_time():
         end_time = form.data['end_time']
         print('valid')
         print((start_date, end_date))
-        sql_start_time = (str(start_date)+' ' +str(start_time))
-        sql_end_time = (str(end_date)+' ' +str(end_time))
+        sql_start_time = (str(start_date)+' ' + str(start_time))
+        sql_end_time = (str(end_date)+' ' + str(end_time))
         report = CustomerOrders(id)
-        content = report.time(sql_start_time,sql_end_time)
+        content = report.time(sql_start_time, sql_end_time)
         return render_template('/manager/by_time.html', form=form, content=content)
 
     return render_template('/manager/by_time.html', form=form, content=None)
@@ -277,4 +279,3 @@ def by_item():
 
     items = Item.query.all()
     return render_template('/manager/by_item.html', items=items, form=form, content=None)
-

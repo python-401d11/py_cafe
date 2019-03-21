@@ -24,17 +24,14 @@ Py_cafe allows restauranteurs to integrate front-of-house data (customer identit
 
 ## Getting Started — Running local
 
-1. Clone Repo to local machine.
 
+1. Clone Repo to local machine.
 2. Set up a  Virtual Environment using  PIPENV SHELL
 3. Create a database and in your .env file  DATABASE_URL =  << your data base >>
 4. Add a secret key to you .env file.  SECRET_KEY = <<your secret key (UUID) >>
 5. Install dependencies  using. PIPENV INSTALL
 6. Run the app     FLASK RUN
-
-
 7. In your browser go to localhost:5000
-
 8. In order to set up first manager role go to localhost:5000/user/manager
 
 
@@ -56,5 +53,6 @@ Py_cafe allows restauranteurs to integrate front-of-house data (customer identit
 
  * CSS Skeleton V2.04  was used  Copyright 2014, Dave Gamache, Free to use under MIT license.
  * CSS Inspired by bitsofco.de/holy-grail-layout-css-grid 
+
 
  
