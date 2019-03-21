@@ -149,7 +149,7 @@ def all_users():
 
 
 @app.route('/reservation', methods=['GET', 'POST'])
-@authorization_required(roles=['customer','manager', 'employee'])
+@authorization_required(roles=['customer', 'manager', 'employee'])
 def reservation():
     """
     route handler for reservations
