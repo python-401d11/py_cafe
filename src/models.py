@@ -124,8 +124,10 @@ class Order(db.Model):
             item.inventory_count -= 1
             db.session.commit()
         self.items = items
-        self.customer = customer
-        self.employee = employee
+        if customer:
+            self.customer = customer
+        if employee:
+            self.employee = employee
 
 
 class OrderItems(db.Model):
@@ -153,6 +155,7 @@ class Item(db.Model):
     price = db.Column(db.Numeric(10, 2))
     cog = db.Column(db.Numeric(10, 2))
     inventory_count = db.Column(db.Integer, default=0)
+    active = db.Column(db.Boolean, default=True)
 
     orders = db.relationship(
         'Order',

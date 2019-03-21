@@ -1,8 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, PasswordField, HiddenField
+
+from wtforms.validators import DataRequired, Email, Optional
 from wtforms.validators import DataRequired
 from wtforms.fields.html5 import DateField, TimeField
-# from wtforms_components import TimeField
+
 from .models import Manager, Customer, Employee, Order, OrderItems, Item, User
 from flask import g
 
@@ -54,8 +56,8 @@ class OrderForm(FlaskForm):
     """
     item_ids = HiddenField('item_ids', validators=[DataRequired()], render_kw={
                            "v-model": "orderItemIds"})
-    customer = SelectField('customer', default=None)
-    employee = SelectField('employee', default=None)
+    customer = SelectField('customer', validators=[Optional()], default=None)
+    employee = SelectField('employee', validators=[Optional()], default=None)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -77,13 +79,15 @@ class UpdateItemsForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
-                              for item in Item.query.all()]
+                              for item in Item.query.filter_by(active=True).all()]
 
 
-class ItemForm(FlaskForm):
+
+class ItemReportForm(FlaskForm):
     """
     item form
     """
+
     items = SelectField('items')
 
     def __init__(self, *args, **kwargs):
@@ -101,7 +105,7 @@ class DeleteForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
-                              for item in Item.query.all()]
+                              for item in Item.query.filter_by(active=True).all()]
 
 
 class DeleteUserForm(FlaskForm):
@@ -130,6 +134,6 @@ class EmployeeForm(FlaskForm):
     employee form
     """
     name = StringField('name', validators=[DataRequired()])
-    email = StringField('email', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired(), Email()])
     password = PasswordField('password', validators=[DataRequired()])
     pay_rate = StringField('pay rate')
