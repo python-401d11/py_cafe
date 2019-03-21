@@ -80,6 +80,16 @@ def customer(session):
 
 
 @pytest.fixture()
+def auth_customer(client, customer):
+    client.post(
+        '/login',
+        data={'email': customer.email, 'password': '12345'},
+        follow_redirects=True
+    )
+    return client
+
+
+@pytest.fixture()
 def manager(session):
     """ Create test user with manager role """
     manager = Manager(
@@ -90,6 +100,16 @@ def manager(session):
     session.add(manager)
     session.commit()
     return manager
+
+
+@pytest.fixture()
+def auth_manager(client, manager):
+    client.post(
+        '/login',
+        data={'email': manager.email, 'password': '12345'},
+        follow_redirects=True
+    )
+    return client
 
 
 @pytest.fixture()
@@ -107,15 +127,18 @@ def employee(session):
 
 
 @pytest.fixture()
+def auth_employee(client, employee):
+    client.post(
+        '/login',
+        data={'email': employee.email, 'password': '54321'},
+        follow_redirects=True
+    )
+    return client
+
+
+@pytest.fixture()
 def items(session):
     """ Create test items """
-    item1 = Item(
-        name='Biscuits and Gravy',
-        price=9.50,
-        cog=6.54,
-        inventory_count=12
-    )
-    session.add(item1)
     item2 = Item(
         name='Cheeseburger',
         price=8.50,
@@ -123,6 +146,13 @@ def items(session):
         inventory_count=22
     )
     session.add(item2)
+    item1 = Item(
+        name='Biscuits and Gravy',
+        price=9.50,
+        cog=6.00,
+        inventory_count=12
+    )
+    session.add(item1)
     session.commit()
     return [item1, item2]
 
