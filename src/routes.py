@@ -26,11 +26,6 @@ def get_items():
     return Items.query.all()
 
 
-@app.route('/customer')
-def customer():
-    pass
-
-
 @app.route('/order', methods=['GET', 'POST'])
 @authorization_required(roles=['customer', 'employee', 'manager'])
 def order():
@@ -70,13 +65,14 @@ def order():
 
 
 @app.route('/item', methods=['GET'])
-# @authorization_required(roles=['employee', 'manager'])
+@authorization_required(roles=['employee', 'manager'])
 def all_items():
     items = Item.query.filter_by(active=True).all()
     return render_template('items/all_items.html', items=items)
 
 
 @app.route('/item/add', methods=['GET', 'POST'])
+@authorization_required(roles=['employee', 'manager'])
 def add_items():
     form = AddItemsForm()
     if form.validate_on_submit():
@@ -94,6 +90,7 @@ def add_items():
 
 
 @app.route('/item/delete', methods=['GET', 'POST'])  # this is a DELETE
+@authorization_required(roles=['employee', 'manager'])
 def delete_items():
     form = DeleteForm()
     if form.validate_on_submit():
@@ -107,6 +104,7 @@ def delete_items():
 
 
 @app.route('/item/update', methods=['GET', 'POST'])  # this is a PUT
+@authorization_required(roles=['employee', 'manager'])
 def update_items():
     form = UpdateItemsForm()
     if form.validate_on_submit():
@@ -120,21 +118,8 @@ def update_items():
     return render_template('items/update_items.html', form=form, items=items)
 
 
-@app.route('/all_users', methods=['GET', 'POST'])
-def all_users():
-    form = DeleteUserForm()
-    if form.validate_on_submit():
-        id = form.data['users']
-        user = User.query.filter_by(id=id).first()
-        db.session.delete(user)
-        db.session.commit()
-        return redirect(url_for('.all_users'))
-    users = User.query.all()
-    return render_template('/user/all_users.html', users=users, form=form)
-
-
 @app.route('/reservation', methods=['GET', 'POST'])
-@authorization_required(roles=['customer'])
+@authorization_required(roles=['customer', 'employee', 'manager'])
 def reservation():
     form = ReservationForm()
     if form.validate_on_submit():
@@ -151,7 +136,22 @@ def reservation():
     return render_template('/auth/reservations.html', form=form, reservations=reservations)
 
 
+@app.route('/all_users', methods=['GET', 'POST'])
+@authorization_required(roles=['manager'])
+def all_users():
+    form = DeleteUserForm()
+    if form.validate_on_submit():
+        id = form.data['users']
+        user = User.query.filter_by(id=id).first()
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('.all_users'))
+    users = User.query.all()
+    return render_template('/user/all_users.html', users=users, form=form)
+
+
 @app.route('/user/manager', methods=['GET', 'POST'])
+#@authorization_required(roles=['manager'])
 def create_manager():
     form = ManagerForm()
     if form.validate_on_submit():
@@ -168,6 +168,7 @@ def create_manager():
 
 
 @app.route('/user/employee', methods=['GET', 'POST'])
+@authorization_required(roles=['manager'])
 def create_employee():
     form = EmployeeForm()
     if form.validate_on_submit():
@@ -185,11 +186,13 @@ def create_employee():
 
 
 @app.route('/manager', methods=['GET'])
+@authorization_required(roles=['employee', 'manager'])
 def reports():
     return render_template('/manager/report_index.html')
 
 
 @app.route('/manager/by_customer', methods=['GET', 'POST'])
+@authorization_required(roles=['employee', 'manager'])
 def by_customer():
     form = DeleteUserForm()
     if form.validate_on_submit():
@@ -205,6 +208,7 @@ def by_customer():
 
 
 @app.route('/manager/by_item', methods=['GET', 'POST'])
+@authorization_required(roles=['employee', 'manager'])
 def by_item():
     form = ItemReportForm()
     if form.validate_on_submit():
