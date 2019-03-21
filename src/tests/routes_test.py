@@ -1,12 +1,5 @@
 
 class TestClass():
-    @classmethod
-    def setup_class(cls):
-        print('setup_class')
-
-    @classmethod
-    def teardown_class(cls):
-        pass
 
     def test_home_route(self, client):
         """
@@ -31,17 +24,6 @@ class TestClass():
         rv = client.get('/register')
         assert rv.status_code == 200
         assert b'<title>Register</title>' in rv.data
-
-    def test_order_route(self, client, customer):
-        """
-        test order route
-        """
-        rv = client.post(
-            '/order',
-            data={'email': customer.email, 'password': customer.password},
-            follow_redirects=True,
-        )
-        assert rv.status_code == 200
 
     def test_item_add_route(self, client, auth_manager):
         """
