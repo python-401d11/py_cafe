@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, ReservationForm
-from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemReportForm, EmployeeForm
+from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemReportForm, EmployeeForm, DateTimeForm
 from .models import db, User, Manager, Customer, Employee, Item, Order, Reservation
 from .models_reports import CustomerOrders
 from .auth import login_required, authorization_required
@@ -13,22 +13,25 @@ import os
 
 @app.route('/')
 def home():
+    """
+    route handler for home 
+    """
     return render_template('home.html'), 200
 
 
 @app.route('/about')
 def about():
+    """
+    route handler for the about page
+    """
     return render_template('about_us.html'), 200
-
-
-@app.add_template_global
-def get_items():
-    return Items.query.all()
-
 
 @app.route('/order', methods=['GET', 'POST'])
 @authorization_required(roles=['customer', 'employee', 'manager'])
 def order():
+    """
+    route handler for order
+    """
     form = OrderForm()
     if form.validate_on_submit():
         item_ids = form.data['item_ids'].split(',')
@@ -67,6 +70,9 @@ def order():
 @app.route('/item', methods=['GET'])
 @authorization_required(roles=['employee', 'manager'])
 def all_items():
+    """
+    route handler for items to display all items in database
+    """
     items = Item.query.filter_by(active=True).all()
     return render_template('items/all_items.html', items=items)
 
@@ -74,6 +80,9 @@ def all_items():
 @app.route('/item/add', methods=['GET', 'POST'])
 @authorization_required(roles=['employee', 'manager'])
 def add_items():
+    """
+    route handler for add items
+    """
     form = AddItemsForm()
     if form.validate_on_submit():
         item = Item(
@@ -92,6 +101,9 @@ def add_items():
 @app.route('/item/delete', methods=['GET', 'POST'])  # this is a DELETE
 @authorization_required(roles=['employee', 'manager'])
 def delete_items():
+    """
+    route handler for delete items
+    """
     form = DeleteForm()
     if form.validate_on_submit():
         name = form.data['items']
@@ -106,6 +118,9 @@ def delete_items():
 @app.route('/item/update', methods=['GET', 'POST'])  # this is a PUT
 @authorization_required(roles=['employee', 'manager'])
 def update_items():
+    """
+    route handler for update items
+    """
     form = UpdateItemsForm()
     if form.validate_on_submit():
         item = Item.query.get(form.data['items'])
@@ -117,10 +132,29 @@ def update_items():
     items = Item.query.filter_by(active=True).all()
     return render_template('items/update_items.html', form=form, items=items)
 
+@app.route('/all_users', methods=['GET', 'POST'])
+@authorization_required(roles=['manager'])
+def all_users():
+    """
+    route handler to display all users
+    """
+    form = DeleteUserForm()
+    if form.validate_on_submit():
+        id = form.data['users']
+        user = User.query.filter_by(id=id).first()
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('.all_users'))
+    users = User.query.all()
+    return render_template('/user/all_users.html', users=users, form=form)
+
 
 @app.route('/reservation', methods=['GET', 'POST'])
-@authorization_required(roles=['customer', 'employee', 'manager'])
+@authorization_required(roles=['customer','manager', 'employee'])
 def reservation():
+    """
+    route handler for reservations
+    """
     form = ReservationForm()
     if form.validate_on_submit():
         reservation = Reservation(
@@ -132,7 +166,10 @@ def reservation():
         db.session.add(reservation)
         db.session.commit()
         return redirect(url_for('.reservation'))
-    reservations = Reservation.query.filter_by(id=g.user.id)
+    if g.user.type == 'manager' or q.user.type == 'employee':
+        reservations = Reservation.query.all()
+    else:
+        reservations = Reservation.query.filter_by(cust_id=g.user.id).all()
     return render_template('/auth/reservations.html', form=form, reservations=reservations)
 
 
@@ -153,6 +190,9 @@ def all_users():
 @app.route('/user/manager', methods=['GET', 'POST'])
 #@authorization_required(roles=['manager'])
 def create_manager():
+    """
+    route handler to create a manager role
+    """
     form = ManagerForm()
     if form.validate_on_submit():
         manager = Manager(
@@ -170,6 +210,9 @@ def create_manager():
 @app.route('/user/employee', methods=['GET', 'POST'])
 @authorization_required(roles=['manager'])
 def create_employee():
+    """
+    route handler to create an employee role
+    """
     form = EmployeeForm()
     if form.validate_on_submit():
         employee = Employee(
@@ -188,12 +231,18 @@ def create_employee():
 @app.route('/manager', methods=['GET'])
 @authorization_required(roles=['employee', 'manager'])
 def reports():
+    """
+    route handler for manager reports
+    """
     return render_template('/manager/report_index.html')
 
 
 @app.route('/manager/by_customer', methods=['GET', 'POST'])
 @authorization_required(roles=['employee', 'manager'])
 def by_customer():
+    """
+    route handler for tems sold by customer report
+    """
     form = DeleteUserForm()
     if form.validate_on_submit():
         id = form.data['users']
@@ -206,10 +255,31 @@ def by_customer():
     users = User.query.all()
     return render_template('/manager/by_customer.html', users=users, form=form, content=None)
 
+@app.route('/manager/by_time', methods=['GET', 'POST'])
+def by_time():
+    form = DateTimeForm()
+    if form.validate_on_submit():
+        start_date = form.data['start_date']
+        end_date = form.data['end_date']
+        start_time = form.data['start_time']
+        end_time = form.data['end_time']
+        print('valid')
+        print((start_date, end_date))
+        sql_start_time = (str(start_date)+' ' +str(start_time))
+        sql_end_time = (str(end_date)+' ' +str(end_time))
+        report = CustomerOrders(id)
+        content = report.time(sql_start_time,sql_end_time)
+        return render_template('/manager/by_time.html', form=form, content=content)
+
+    return render_template('/manager/by_time.html', form=form, content=None)
+
 
 @app.route('/manager/by_item', methods=['GET', 'POST'])
 @authorization_required(roles=['employee', 'manager'])
 def by_item():
+    """
+    route handler for total customer sales by item report
+    """
     form = ItemReportForm()
     if form.validate_on_submit():
         id = form.data['items']
