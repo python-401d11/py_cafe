@@ -13,27 +13,25 @@ import os
 
 @app.route('/')
 def home():
+    """
+    route handler for home 
+    """
     return render_template('home.html'), 200
 
 
 @app.route('/about')
 def about():
+    """
+    route handler for the about page
+    """
     return render_template('about_us.html'), 200
-
-
-@app.add_template_global
-def get_items():
-    return Items.query.all()
-
-
-@app.route('/customer')
-def customer():
-    pass
-
 
 @app.route('/order', methods=['GET', 'POST'])
 @authorization_required(roles=['customer', 'employee', 'manager'])
 def order():
+    """
+    route handler for order
+    """
     form = OrderForm()
     if form.validate_on_submit():
         item_ids = form.data['item_ids'].split(',')
@@ -70,12 +68,18 @@ def order():
 @app.route('/item', methods=['GET'])
 # @authorization_required(roles=['employee', 'manager'])
 def all_items():
+    """
+    route handler for items to display all items in database
+    """
     items = Item.query.all()
     return render_template('items/all_items.html', items=items)
 
 
 @app.route('/item/add', methods=['GET', 'POST'])
 def add_items():
+    """
+    route handler for add items
+    """
     form = AddItemsForm()
     if form.validate_on_submit():
         item = Item(
@@ -93,6 +97,9 @@ def add_items():
 
 @app.route('/item/delete', methods=['GET', 'POST'])  # this is a DELETE
 def delete_items():
+    """
+    route handler for delete items
+    """
     form = DeleteForm()
     if form.validate_on_submit():
         name = form.data['items']
@@ -106,6 +113,9 @@ def delete_items():
 
 @app.route('/item/update', methods=['GET', 'POST'])  # this is a PUT
 def update_items():
+    """
+    route handler for update items
+    """
     form = UpdateItemsForm()
     if form.validate_on_submit():
         item = Item.query.get(form.data['items'])
@@ -120,6 +130,9 @@ def update_items():
 
 @app.route('/all_users', methods=['GET', 'POST'])
 def all_users():
+    """
+    route handler to display all users
+    """
     form = DeleteUserForm()
     if form.validate_on_submit():
         id = form.data['users']
@@ -132,8 +145,11 @@ def all_users():
 
 
 @app.route('/reservation', methods=['GET', 'POST'])
-@authorization_required(roles=['customer'])
+@authorization_required(roles=['customer','manager'])
 def reservation():
+    """
+    route handler for reservations
+    """
     form = ReservationForm()
     if form.validate_on_submit():
         reservation = Reservation(
@@ -145,12 +161,18 @@ def reservation():
         db.session.add(reservation)
         db.session.commit()
         return redirect(url_for('.reservation'))
-    reservations = Reservation.query.filter_by(id=g.user.id)
+    if g.user.type == 'manager':
+        reservations = Reservation.query.all()
+    else:
+        reservations = Reservation.query.filter_by(cust_id=g.user.id).all()
     return render_template('/auth/reservations.html', form=form, reservations=reservations)
 
 
 @app.route('/user/manager', methods=['GET', 'POST'])
 def create_manager():
+    """
+    route handler to create a manager role
+    """
     form = ManagerForm()
     if form.validate_on_submit():
         manager = Manager(
@@ -167,6 +189,9 @@ def create_manager():
 
 @app.route('/user/employee', methods=['GET', 'POST'])
 def create_employee():
+    """
+    route handler to create an employee role
+    """
     form = EmployeeForm()
     if form.validate_on_submit():
         employee = Employee(
@@ -184,11 +209,17 @@ def create_employee():
 
 @app.route('/manager', methods=['GET'])
 def reports():
+    """
+    route handler for manager reports
+    """
     return render_template('/manager/report_index.html')
 
 
 @app.route('/manager/by_customer', methods=['GET', 'POST'])
 def by_customer():
+    """
+    route handler for tems sold by customer report
+    """
     form = DeleteUserForm()
     if form.validate_on_submit():
         id = form.data['users']
@@ -222,6 +253,9 @@ def by_time():
 
 @app.route('/manager/by_item', methods=['GET', 'POST'])
 def by_item():
+    """
+    route handler for total customer sales by item report
+    """
     form = ItemForm()
     if form.validate_on_submit():
         id = form.data['items']
