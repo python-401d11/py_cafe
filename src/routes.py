@@ -165,7 +165,7 @@ def reservation():
         db.session.add(reservation)
         db.session.commit()
         return redirect(url_for('.reservation'))
-    if g.user.type == 'manager' or q.user.type == 'employee':
+    if g.user.type == 'manager' or g.user.type == 'employee':
         reservations = Reservation.query.all()
     else:
         reservations = Reservation.query.filter_by(cust_id=g.user.id).all()
