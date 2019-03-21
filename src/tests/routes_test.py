@@ -25,22 +25,6 @@ class TestClass():
         assert rv.status_code == 200
         assert b'<title>Register</title>' in rv.data
 
-    def test_item_add_route(self, client, auth_manager):
-        """
-        test add item route
-        """
-        rv = client.get('/item/add')
-        assert rv.status_code == 200
-        assert b'<title>Add Items</title>' in rv.data
-
-    def test_item_delete_route(self, client, auth_manager):
-        """
-        test add item route
-        """
-        rv = client.get('/item/delete')
-        assert rv.status_code == 200
-        assert b'<title>Delete Items</title>' in rv.data
-
     def test_users_route(self, client, auth_manager):
         """
         test all users route
