@@ -36,7 +36,6 @@ def order():
     if form.validate_on_submit():
         item_ids = form.data['item_ids'].split(',')
         items = [Item.query.get(i) for i in item_ids]
-
         customer = None
         if g.user.type == 'customer':
             customer = Customer.query.get(g.user.id)
