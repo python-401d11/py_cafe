@@ -1,4 +1,4 @@
-from src.models import Manager, Customer, Employee, Order, OrderItems, Item
+from src.models import Manager, Customer, Employee, Order, OrderItems, Item, Reservation
 
 
 class TestUserModels():
@@ -69,3 +69,15 @@ class TestOrders():
         assert order.employee.name == 'Dan'
         assert order.items[0].name == 'Biscuits and Gravy'
         assert order.items[1].name == 'Cheeseburger'
+
+class TestReservations():
+    """ Tests for Reservation model """   
+
+    def test_create_reservation(self,reservation):
+        assert reservation
+
+    def test_reservation_data(self, reservation):
+        assert reservation.date == '2019-03-24'
+        assert reservation.time == '21:00:00'
+        assert reservation.party == 3
+

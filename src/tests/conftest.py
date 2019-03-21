@@ -1,5 +1,5 @@
 from src.models import db as _db
-from src.models import Manager, Customer, Employee, Order, OrderItems, Item
+from src.models import Manager, Customer, Employee, Order, OrderItems, Item, Reservation
 from src import app as _app
 import pytest
 import os
@@ -105,6 +105,15 @@ def employee(session):
     session.commit()
     return employee
 
+@pytest.fixture()
+def reservation(session):
+    """ create test reservation """
+    reservation = Reservation(
+        date = '3/24/2019',
+        time = '11:00 PM',
+        party = 3
+    )
+    return reservation
 
 @pytest.fixture()
 def items(session):

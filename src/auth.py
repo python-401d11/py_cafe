@@ -6,6 +6,9 @@ import functools
 
 
 def login_required(view):
+    """
+    restricts access to decorated route
+    """
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
@@ -15,6 +18,9 @@ def login_required(view):
 
 
 def authorization_required(view=None, roles=[]):
+    """
+    restricts access to only certain roles
+    """
     if not view:
         return functools.partial(authorization_required, roles=roles)
 
@@ -30,6 +36,9 @@ def authorization_required(view=None, roles=[]):
 
 @app.before_request
 def load_logged_in_user():
+    """
+
+    """
     user_id = session.get('user_id')
     if user_id is None:
         g.user = None
@@ -39,6 +48,9 @@ def load_logged_in_user():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    route handler for register
+    """
     form = RegisterForm()
     if form.validate_on_submit():
         customer = Customer(
@@ -55,6 +67,9 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    route handler for login page
+    """
     form = AuthForm()
     if form.validate_on_submit():
         email = form.data['email']
@@ -78,5 +93,8 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
+    """
+    route handler for logout
+    """
     session.clear()
     return redirect(url_for('.login'))
