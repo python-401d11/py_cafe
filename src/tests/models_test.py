@@ -1,4 +1,5 @@
 from src.models import Manager, Customer, Employee, Order, OrderItems, Item
+from src.models_reports import CustomerOrders
 
 
 class TestUserModels():
@@ -70,3 +71,4 @@ class TestOrders():
         assert order.employee.name == 'Dan'
         assert order.items[0].name == 'Biscuits and Gravy'
         assert order.items[1].name == 'Cheeseburger'
+
