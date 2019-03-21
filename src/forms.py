@@ -61,9 +61,9 @@ class OrderForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.customer.choices = [(str(c.id), c.name)
+        self.customer.choices = [('None', '')] + [(str(c.id), c.name)
                                  for c in Customer.query.all()]
-        self.employee.choices = [(str(e.id), e.name)
+        self.employee.choices = [('None', '')] + [(str(e.id), e.name)
                                  for e in Employee.query.all()]
 
 
