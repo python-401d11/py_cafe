@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
 from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, ReservationForm
-from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemForm, EmployeeForm
+from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemReportForm, EmployeeForm
 from .models import db, User, Manager, Customer, Employee, Item, Order, Reservation
 from .models_reports import CustomerOrders
 from .auth import login_required, authorization_required
@@ -101,7 +101,7 @@ def delete_items():
         item = Item.query.filter_by(id=name).first()
         item.active = False
         db.session.commit()
-        return redirect(url_for('.delete_items'))
+        return redirect(url_for('.all_items'))
     items = Item.query.all()
     return render_template('items/delete_items.html', form=form, items=items)
 
@@ -206,7 +206,7 @@ def by_customer():
 
 @app.route('/manager/by_item', methods=['GET', 'POST'])
 def by_item():
-    form = ItemForm()
+    form = ItemReportForm()
     if form.validate_on_submit():
         id = form.data['items']
         report = CustomerOrders(id)
