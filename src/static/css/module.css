@@ -1,13 +1,54 @@
-#items-table td.btn-add {
-    cursor: pointer;
-    font-weight: bold;
-    padding: 10px;
-    background-color: springgreen;
+#orders {
+    display: grid;
+    column-gap: 40px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "items order-items"
+        "form order-items";
 }
+#orders #items-table {
+    grid-area: items;
+}
+#orders #order-items-table {
+    grid-area: order-items;
+}
+#orders #order-form {
+    grid-area: form;
+    display: grid;
+    column-gap: 10px;
+    margin-bottom: 0px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 3fr;
+    grid-template-areas: "cl el ."
+                         "ci ei b";
+}
+#orders #order-form label[for=customer] {
+    grid-area: cl;
+}
+#orders #order-form #customer {
+    grid-area: ci;
+}
+#orders #order-form label[for=employee] {
+    grid-area: el;
+}
+#orders #order-form #employee {
+    grid-area: ei;
+}
+#orders #order-form-btn {
+    grid-area: b;
+}
+
+#items-table td.btn-add, 
 #order-items-table td.btn-remove {
     cursor: pointer;
     font-weight: bold;
-    padding: 10px;
+    padding: 4px 0px;
+    width: 40px;
+    font-size: 1.4em;
+    text-align: center;
+    background-color: springgreen;
+}
+#order-items-table td.btn-remove {
     background-color: orangered;
 }
 a.button {

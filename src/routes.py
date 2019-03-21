@@ -36,19 +36,36 @@ def customer():
 def order():
     form = OrderForm()
     if form.validate_on_submit():
+        import pdb; pdb.set_trace()
         item_ids = form.data['item_ids'].split(',')
         items = [Item.query.get(i) for i in item_ids]
-        customer = Customer.query.filter_by(id=g.user.id).first()
+
+        if g.user.type == 'customer':
+            customer = Customer.query.get(g.user.id)
+        elif form.data['customer']:
+            cust_id = form.data['customer']
+            customer = Customer.query.get(cust_id)
+
+        if g.user.type == 'employee':
+            employee = Employee.query.get(g.user.id)
+        elif form.data['employee']:
+            empl_id = form.data['employee']
+            employee = Employee.query.get(empl_id)
 
         order = Order(
             customer=customer,
+            employee=employee,
             items=items
         )
         db.session.add(order)
         db.session.commit()
 
     items = Item.query.all()
-    return render_template('order.html', items=items, form=form)
+    return render_template(
+        'order.html',
+        items=items,
+        form=form
+    )
 
 
 @app.route('/item', methods=['GET'])
@@ -115,22 +132,21 @@ def all_users():
     return render_template('/user/all_users.html', users=users, form=form)
 
 
-@app.route('/reservation',methods=['GET','POST'])
+@app.route('/reservation', methods=['GET', 'POST'])
 @authorization_required(roles=['customer'])
 def reservation():
     form = ReservationForm()
     if form.validate_on_submit():
-        # return('g user' + str(g.user.name))
         reservation = Reservation(
-            date = form.data['date'], 
-            time = form.data['time'],
-            party = form.data['party'],
-            customer = Customer.query.filter_by(id=g.user.id).first()
+            date=form.data['date'],
+            time=form.data['time'],
+            party=form.data['party'],
+            customer=Customer.query.filter_by(id=g.user.id).first()
         )
         db.session.add(reservation)
-        db.session.commit()    
+        db.session.commit()
         return redirect(url_for('.reservation'))
-    reservations = Reservation.query.filter_by(id=g.user.id)    
+    reservations = Reservation.query.filter_by(id=g.user.id)
     return render_template('/auth/reservations.html', form=form, reservations=reservations)
 
 
@@ -185,23 +201,18 @@ def by_customer():
 
     users = User.query.all()
     return render_template('/manager/by_customer.html', users=users, form=form, content=None)
-    
-    
-@app.route('/manager/by_item', methods=['GET','POST'])
+
+
+@app.route('/manager/by_item', methods=['GET', 'POST'])
 def by_item():
     form = ItemForm()
     if form.validate_on_submit():
         id = form.data['items']
         report = CustomerOrders(id)
-        content= report.customer_totals(id)
+        content = report.customer_totals(id)
         items = Item.query.all()
 
         return render_template('/manager/by_item.html', items=items, form=form, content=content)
 
     items = Item.query.all()
     return render_template('/manager/by_item.html', items=items, form=form, content=None)
-    
-    
-@app.route('/reservation')
-def reservation():
-    pass

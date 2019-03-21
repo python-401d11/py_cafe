@@ -23,14 +23,25 @@ class AddItemsForm(FlaskForm):
     cost = StringField('cost', validators=[DataRequired()])
     count = StringField('count', validators=[DataRequired()])
 
+
 class ReservationForm(FlaskForm):
     date = StringField('date', validators=[DataRequired()])
     time = StringField('time', validators=[DataRequired()])
     party = StringField('party', validators=[DataRequired()])
 
+
 class OrderForm(FlaskForm):
     item_ids = HiddenField('item_ids', validators=[DataRequired()], render_kw={
                            "v-model": "orderItemIds"})
+    customer = SelectField('customer', default=None)
+    employee = SelectField('employee', default=None)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.customer.choices = [(str(c.id), c.name)
+                                 for c in Customer.query.all()]
+        self.employee.choices = [(str(e.id), e.name)
+                                 for e in Employee.query.all()]
 
 
 class UpdateItemsForm(FlaskForm):
@@ -43,13 +54,16 @@ class UpdateItemsForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
+
+
 class ItemForm(FlaskForm):
     items = SelectField('items')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
-    
+
 
 class DeleteForm(FlaskForm):
     items = SelectField('items')
@@ -59,7 +73,7 @@ class DeleteForm(FlaskForm):
         self.items.choices = [(str(item.id), item.name)
                               for item in Item.query.all()]
 
-        
+
 class DeleteUserForm(FlaskForm):
     users = SelectField('users')
 
@@ -68,7 +82,7 @@ class DeleteUserForm(FlaskForm):
         self.users.choices = [(str(user.id), user.name)
                               for user in User.query.all()]
 
-        
+
 class ManagerForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])
