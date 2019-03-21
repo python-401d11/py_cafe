@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, PasswordField, HiddenField
 from wtforms.validators import DataRequired
+from wtforms.fields.html5 import DateField, TimeField
+# from wtforms_components import TimeField
 from .models import Manager, Customer, Employee, Order, OrderItems, Item, User
 from flask import g
 
@@ -23,10 +25,17 @@ class AddItemsForm(FlaskForm):
     cost = StringField('cost', validators=[DataRequired()])
     count = StringField('count', validators=[DataRequired()])
 
+class DateTimeForm(FlaskForm):
+    start_date = DateField('Start Date', format = '%Y-%m-%d')
+    start_time = TimeField('Start Time')
+    end_date = DateField('End Date', format = '%Y-%m-%d')
+    end_time = TimeField('Start Time')
+
+
 
 class ReservationForm(FlaskForm):
-    date = StringField('date', validators=[DataRequired()])
-    time = StringField('time', validators=[DataRequired()])
+    date = DateField('date', validators=[DataRequired()])
+    time = TimeField('time', validators=[DataRequired()])
     party = StringField('party', validators=[DataRequired()])
 
 
