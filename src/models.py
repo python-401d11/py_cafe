@@ -124,8 +124,10 @@ class Order(db.Model):
             item.inventory_count -= 1
             db.session.commit()
         self.items = items
-        self.customer = customer
-        self.employee = employee
+        if customer:
+            self.customer = customer
+        if employee:
+            self.employee = employee
 
 
 class OrderItems(db.Model):

@@ -39,15 +39,17 @@ def order():
         item_ids = form.data['item_ids'].split(',')
         items = [Item.query.get(i) for i in item_ids]
 
+        customer = None
         if g.user.type == 'customer':
             customer = Customer.query.get(g.user.id)
-        elif form.data['customer']:
+        elif form.data['customer'] != 'None':
             cust_id = form.data['customer']
             customer = Customer.query.get(cust_id)
 
+        employee = None
         if g.user.type == 'employee':
             employee = Employee.query.get(g.user.id)
-        elif form.data['employee']:
+        elif form.data['employee'] != 'None':
             empl_id = form.data['employee']
             employee = Employee.query.get(empl_id)
 

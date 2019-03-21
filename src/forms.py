@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, PasswordField, HiddenField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, Optional
 from .models import Manager, Customer, Employee, Order, OrderItems, Item, User
 from flask import g
 
@@ -33,8 +33,8 @@ class ReservationForm(FlaskForm):
 class OrderForm(FlaskForm):
     item_ids = HiddenField('item_ids', validators=[DataRequired()], render_kw={
                            "v-model": "orderItemIds"})
-    customer = SelectField('customer', default=None)
-    employee = SelectField('employee', default=None)
+    customer = SelectField('customer', validators=[Optional()], default=None)
+    employee = SelectField('employee', validators=[Optional()], default=None)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
