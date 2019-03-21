@@ -59,7 +59,7 @@ def order():
         db.session.add(order)
         db.session.commit()
 
-    items = Item.query.all()
+    items = Item.query.filter_by(active=True).all()
     return render_template(
         'order.html',
         items=items,
