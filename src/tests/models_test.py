@@ -1,4 +1,8 @@
+
 from src.models import Manager, Customer, Employee, Order, OrderItems, Item, Reservation
+
+from src.models_reports import CustomerOrders
+
 
 
 class TestUserModels():
@@ -81,4 +85,5 @@ class TestReservations():
         assert reservation.date == '2019-03-24'
         assert reservation.time == '21:00:00'
         assert reservation.party == 3
+
 

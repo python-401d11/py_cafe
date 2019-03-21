@@ -172,7 +172,8 @@ def order(session, customer, employee, items):
     order = Order(
         customer=customer,
         employee=employee,
-        items=items
+        items=items,
+    
     )
     session.add(order)
     session.commit()
