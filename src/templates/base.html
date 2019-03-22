@@ -24,6 +24,7 @@
                     <li><a href="{{url_for(".home") }}">Home</a></li>
                     <li><a href="{{url_for(".about") }}">About Us</a></li>
                     {% if g.user %}
+                    <li><a href="{{url_for(".reservation") }}">Reservations</a></li>
                     <li><a href="{{url_for(".order") }}">Orders</a></li>
                     {% endif %}
                     {% if g.user and g.user.type in ('employee', 'manager') %}
@@ -33,7 +34,8 @@
                     {% if g.user and g.user.type in ('manager') %}
                     <li><a href="{{url_for(".all_users") }}">Users</a></li>
                     {% endif %}
-                    <li><a href="{{url_for(".reservation") }}">Reservations</a></li>
+                </ul>
+                <ul>
                     {% if not g.user %}
                     <li><a href="{{url_for(".register")}}">Register</a></li>
                     <li><a href="{{url_for(".login") }}">Login</a></li>
