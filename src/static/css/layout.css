@@ -46,4 +46,10 @@ main {
         font-size: .9em;
         padding: 6px;
     }
+    nav #auth-nav {
+        margin-top: -100%;
+    }
+    nav #auth-nav a {
+        float: right;
+    }
 }
