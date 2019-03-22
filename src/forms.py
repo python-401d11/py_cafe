@@ -36,16 +36,16 @@ class AddItemsForm(FlaskForm):
     cost = StringField('cost', validators=[DataRequired()])
     count = StringField('count', validators=[DataRequired()])
 
+
 class DateTimeForm(FlaskForm):
-    start_date = DateField('Start Date', format = '%Y-%m-%d')
+    start_date = DateField('Start Date', format='%Y-%m-%d')
     start_time = TimeField('Start Time')
-    end_date = DateField('End Date', format = '%Y-%m-%d')
+    end_date = DateField('End Date', format='%Y-%m-%d')
     end_time = TimeField('Start Time')
 
 
-
 class ReservationForm(FlaskForm):
-    date = DateField('date', format = '%Y-%m-%d')
+    date = DateField('date', format='%Y-%m-%d')
     time = TimeField('time')
     party = StringField('party', validators=[DataRequired()])
 
@@ -62,9 +62,9 @@ class OrderForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.customer.choices = [('None', '')] + [(str(c.id), c.name)
-                                 for c in Customer.query.all()]
+                                                  for c in Customer.query.all()]
         self.employee.choices = [('None', '')] + [(str(e.id), e.name)
-                                 for e in Employee.query.all()]
+                                                  for e in Employee.query.all()]
 
 
 class UpdateItemsForm(FlaskForm):
@@ -82,12 +82,10 @@ class UpdateItemsForm(FlaskForm):
                               for item in Item.query.filter_by(active=True).all()]
 
 
-
 class ItemReportForm(FlaskForm):
     """
     item form
     """
-
     items = SelectField('items')
 
     def __init__(self, *args, **kwargs):
@@ -137,3 +135,14 @@ class EmployeeForm(FlaskForm):
     email = StringField('email', validators=[DataRequired(), Email()])
     password = PasswordField('password', validators=[DataRequired()])
     pay_rate = StringField('pay rate')
+
+
+class EmployeeSelect(FlaskForm):
+    """ creates a select-option element with all employees """
+
+    employee = SelectField('employee')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.employee.choices = [('None', '')] + [(str(e.id), e.name)
+                                                  for e in Employee.query.all()]
