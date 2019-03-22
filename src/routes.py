@@ -1,10 +1,11 @@
 from flask import render_template, redirect, url_for, request, flash, session, g
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from . import app
-from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm, ReservationForm
-from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemReportForm, EmployeeForm, DateTimeForm
+from .forms import RegisterForm, AddItemsForm, OrderForm, UpdateItemsForm
+from .forms import DeleteForm, DeleteUserForm, ManagerForm, ItemReportForm
+from .forms import ReservationForm, EmployeeForm, DateTimeForm, EmployeeSelect
 from .models import db, User, Manager, Customer, Employee, Item, Order, Reservation
-from .models_reports import CustomerOrders
+from .models_reports import CustomerOrders, EmployeeOrders
 from .auth import login_required, authorization_required
 import requests
 import json
@@ -111,7 +112,7 @@ def delete_items():
         item.active = False
         db.session.commit()
         return redirect(url_for('.all_items'))
-    items = Item.query.all()
+    items = Item.query.filter_by(active=True).all()
     return render_template('items/delete_items.html', form=form, items=items)
 
 
@@ -279,3 +280,18 @@ def by_item():
 
     items = Item.query.all()
     return render_template('/manager/by_item.html', items=items, form=form, content=None)
+
+
+@app.route('/manager/by_employee', methods=['GET', 'POST'])
+@authorization_required(roles=['employee', 'manager'])
+def by_employee():
+    """
+    route handler for total employee sales
+    """
+    form = EmployeeSelect()
+    if form.validate_on_submit():
+        empl_id = form.data['employee']
+        report = EmployeeOrders.employee_items_total(empl_id)
+        return render_template('/manager/by_employee.html', form=form, content=report)
+
+    return render_template('/manager/by_employee.html', form=form, content=None)

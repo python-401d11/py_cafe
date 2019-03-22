@@ -29,10 +29,10 @@ class CustomerOrders():
     def customer_totals(self, item_id=0):
         rtn = []
         SQL = """ 
-        select users.name, count(items.id), items.name from users
+select users.name, count(items.id), items.name from users
 inner join customers on users.id = customers.id
-inner join orders on customers.id=orders.cust_id 
-inner join order_items on orders.id=order_items.order_id 
+inner join orders on customers.id=orders.cust_id
+inner join order_items on orders.id=order_items.order_id
 inner join items on order_items.item_id=items.id
 where items.id={}
 group by users.name, items.name; """.format(item_id)
@@ -40,17 +40,36 @@ group by users.name, items.name; """.format(item_id)
         for row in test:
             rtn.append(row)
         return rtn
-    
-    def time(self,start_time, end_time):
-        rtn =[]
+
+    def time(self, start_time, end_time):
+        rtn = []
         SQL = """select users.name, orders.date_created, count(items.id), items.name from users
 inner join customers on users.id = customers.id
 inner join orders on customers.id=orders.cust_id 
-inner join order_items on orders.id=order_items.order_id 
+inner join order_items on orders.id=order_items.order_id
 inner join items on order_items.item_id=items.id
 where orders.date_created > '{}' 
 and orders.date_created < '{}' 
-group by users.name, orders.date_created, items.name;""".format(start_time,end_time)
+group by users.name, orders.date_created, items.name;""".format(start_time, end_time)
+        test = db.session.execute(SQL)
+        for row in test:
+            rtn.append(row)
+        return rtn
+
+
+class EmployeeOrders():
+
+    @classmethod
+    def employee_items_total(cls, empl_id):
+        rtn = []
+        SQL = """ 
+select items.name, count(items.id) from users
+inner join employees on users.id = employees.id
+inner join orders on employees.id=orders.empl_id
+inner join order_items on orders.id=order_items.order_id
+inner join items on order_items.item_id=items.id
+where employees.id={}
+group by items.name; """.format(empl_id)
         test = db.session.execute(SQL)
         for row in test:
             rtn.append(row)
