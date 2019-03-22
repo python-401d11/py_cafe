@@ -6,29 +6,29 @@
 
 
 {% block content %}
-<h3>Your Reservations</h3>
 <div class="container">
-        <table class="u-full-width">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Party</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for reservation in  reservations %}
-                    <tr>
-                        <td>{{ reservation.date }}</td> 
-                        <td>{{ reservation.time }}</td>
-                        <td>{{ reservation.party }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% if form.errors%}
-            {{form.errors}}
-            {% endif %}
+    <h4>Your Reservations</h4>
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Party</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in  reservations %}
+            <tr>
+                <td>{{ reservation.date }}</td> 
+                <td>{{ reservation.time }}</td>
+                <td>{{ reservation.party }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if form.errors%}
+    {{form.errors}}
+    {% endif %}
     <form action="{{ url_for(".reservation") }}" method = "POST">
         {{ form.hidden_tag() }}
         {{ form.date.label }}{{ form.date(size = 32)}}
