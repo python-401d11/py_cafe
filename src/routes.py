@@ -112,7 +112,7 @@ def delete_items():
         item.active = False
         db.session.commit()
         return redirect(url_for('.all_items'))
-    items = Item.query.all()
+    items = Item.query.filter_by(active=True).all()
     return render_template('items/delete_items.html', form=form, items=items)
 
 
