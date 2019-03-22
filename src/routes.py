@@ -128,6 +128,7 @@ def update_items():
         item.cog = form.data['cost'],
         item.price = form.data['price'],
         item.inventory_count = form.data['count']
+        item.active = form.data['active']
         db.session.commit()
         return redirect(url_for('.update_items'))
     items = Item.query.all()
