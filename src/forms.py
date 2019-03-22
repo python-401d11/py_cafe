@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, PasswordField, HiddenField
+from wtforms import StringField, SelectField, PasswordField, HiddenField, BooleanField
 
 from wtforms.validators import DataRequired, Email, Optional
 from wtforms.validators import DataRequired
@@ -75,11 +75,12 @@ class UpdateItemsForm(FlaskForm):
     price = StringField('price', validators=[DataRequired()])
     cost = StringField('cost', validators=[DataRequired()])
     count = StringField('count', validators=[DataRequired()])
+    active = BooleanField('active', default=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.items.choices = [(str(item.id), item.name)
-                              for item in Item.query.filter_by(active=True).all()]
+                              for item in Item.query.all()]
 
 
 class ItemReportForm(FlaskForm):

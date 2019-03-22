@@ -12,14 +12,18 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Item</th>
                         <th>Number Sold</th>
+                        <th>Active?</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in  content %}
                     <tr>
-                        <td>{{ item[0] }}</td> <!-- Item Name from table-->
-                        <td>{{ item[1] }}</td> <!-- Item price from table-->
+                        <td>{{ item[0] }}</td>
+                        <td>{{ item[2] }}</td> 
+                        <td>{{ item[1] }}</td> 
+                        <td>{{ item[3] }}</td> 
                     </tr>
                     {% endfor %}
                 </tbody>
