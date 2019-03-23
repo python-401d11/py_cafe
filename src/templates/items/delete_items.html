@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Delete Items</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <h4>All Items</h4>
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Cost of Good</th>
+                <th>Inventory</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in  items %}
+            <tr>
+                <td>{{ item.name }}</td> <!-- Item Name from table-->
+                <td>{{ item.price }}</td> <!-- Item price from table-->
+                <td>{{ item.cog }}</td> <!-- Item price from table-->
+                <td>{{ item.inventory_count }}</td> <!-- Item price from table-->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Delete Item</h4>
+    <form action="{{ url_for(".delete_items") }}" method = "POST">
+        {{ form.hidden_tag() }}
+        {{ form.items.label }}{{ form.items()}}
+        <input type="submit" name="delete_items" id="delete_items" value = "Go">
+    </form>
+</div>
+{% endblock content %}

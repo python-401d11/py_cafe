@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title%}
+<title>Create Manager</title>
+{% endblock title%}
+
+{% block content %}
+<div class="container">
+    <h4>Create Manager</h4>
+ 
+    <form class =hidden action="{{ url_for(".create_manager") }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label }}{{ form.name()}}
+        {{ form.email.label }}{{ form.email()}}
+        {{ form.password.label }}{{ form.password()}}
+        <input type="submit" name="delete_users" id="delete_users" value="Go">
+    </form>
+</div>
+{% endblock content %}

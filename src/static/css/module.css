@@ -1,0 +1,99 @@
+#reports p {
+    width: 60%;
+    font-size: 1.2em;
+}
+#reports p a {
+    float: right;
+    margin-bottom: 0px;
+}
+
+/* -------- Orders page -------- */
+#orders {
+    display: grid;
+    column-gap: 40px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "items order-items"
+        "form order-items";
+}
+#orders #items-table {
+    grid-area: items;
+}
+#orders #order-items-table {
+    grid-area: order-items;
+}
+#orders #order-form {
+    grid-area: form;
+    display: grid;
+    column-gap: 10px;
+    margin-bottom: 0px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 3fr;
+    grid-template-areas: "cl el ."
+                         "ci ei b";
+}
+#orders #order-form label[for=customer] {
+    grid-area: cl;
+}
+#orders #order-form #customer {
+    grid-area: ci;
+}
+#orders #order-form label[for=employee] {
+    grid-area: el;
+}
+#orders #order-form #employee {
+    grid-area: ei;
+}
+#orders #order-form-btn {
+    grid-area: b;
+}
+
+#items-table td.btn-add, 
+#order-items-table td.btn-remove {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 4px 0px;
+    width: 40px;
+    font-size: 1.4em;
+    text-align: center;
+    background-color: springgreen;
+}
+#order-items-table td.btn-remove {
+    background-color: orangered;
+}
+a.button {
+    display: inline-block;
+    height: 38px;
+    padding: 0 30px;
+    color: #555;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 38px;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+
+/* -------- About Us page -------- */
+#about h5 {
+    font-size: 1.4em;
+}
+#about h4 {
+    margin-bottom: 0px;
+}
+#about img {
+    width:200px;
+    margin: 0px 20px 30px 0px;
+    float: left;
+}
+#about div {
+    clear: both;
+}

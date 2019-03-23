@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Reports</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container" id="reports">
+    <h4>Reports</h4>
+
+    <p>Total number of each item sold, by customer
+    <a class="button" href="{{url_for(".by_customer") }}">Go</a>
+    </p>
+
+    <p>Total number of each item sold, by employee
+    <a class="button" href="{{url_for(".by_employee") }}">Go</a>
+    </p>
+
+    <p>Total customer sales, by item
+    <a class="button" href="{{url_for(".by_item") }}">Go</a>
+    </p>
+    
+    <p>Total sales, by time
+    <a class="button" href="{{url_for(".by_time") }}">Go</a>
+    </p>
+
+</div>
+
+{% endblock content %}

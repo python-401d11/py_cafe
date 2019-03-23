@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Report By Time</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+        {% if content != None %}
+        <table class="u-full-width">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Date/Time</th>
+                        <th>Quantity</th>
+                        <th>Item</th>
+                        <!-- <th>3</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in  content %}
+                    <tr>
+                        <td>{{ item[0] }}</td> 
+                        <td>{{ item[1] }}</td> 
+                        <td>{{ item[2] }}</td> 
+                        <td>{{ item[3] }}</td> 
+                        <!-- <td>{{ item[4] }}</td>  -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+
+    <h2>Select Item</h2>
+    <form class =hidden action="{{ url_for(".by_time") }}" method = "POST">
+        {{ form.hidden_tag() }}
+        {{ form.start_date.label }}{{ form.start_date() }}
+        {{ form.start_time() }}
+        {{ form.end_date.label }}{{ form.end_date()}}
+        {{ form.end_time() }}
+        <input type="submit" name="time" id="time" value = "Go">
+    </form>
+</div>
+
+{% endblock content %}

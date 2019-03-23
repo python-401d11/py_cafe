@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Make a Reservation</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <h4>Your Reservations</h4>
+    <table class="u-full-width">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Party</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in  reservations %}
+            <tr>
+                <td>{{ reservation.date }}</td> 
+                <td>{{ reservation.time }}</td>
+                <td>{{ reservation.party }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if form.errors%}
+    {{form.errors}}
+    {% endif %}
+    <form action="{{ url_for(".reservation") }}" method = "POST">
+        {{ form.hidden_tag() }}
+        {{ form.date.label }}{{ form.date(size = 32)}}
+        {{ form.time.label }}{{ form.time (size = 32)}}
+        {{ form.party.label }}{{ form.party(size = 32)}}
+        <input type="submit" name="add_reservation" id="add_reservation" value = "Go">
+    </form>
+</div>
+
+{% endblock content %}

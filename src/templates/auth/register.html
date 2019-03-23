@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Register</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h4>Customer Registration</h4>
+    <form action="{{url_for(".register") }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label }}{{ form.name(size=36)}}
+        {{ form.phone.label }}{{ form.phone(size=36)}}
+        {{ form.email.label }}{{ form.email(size=36)}}
+        {{ form.password.label }}{{ form.password(size=36)}}
+        <input type="submit" name="register" id="register" value="Go">
+    </form>
+</div>
+{% endblock content %}
