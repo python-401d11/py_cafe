@@ -13,7 +13,6 @@ autopep8 = "*"
 [packages]
 requests = "*"
 flask = "*"
-flask-sqlalchemy = "*"
 psycopg2-binary = "*"
 flask-migrate = "*"
 python-dotenv = "*"
