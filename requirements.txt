@@ -10,7 +10,7 @@ flask==1.0.2
 idna==2.8
 itsdangerous==1.1.0
 jinja2==2.10.3
-mako==1.1.0
+mako==1.2.2
 markupsafe==1.1.1
 passlib==1.7.1
 psycopg2-binary==2.7.7
